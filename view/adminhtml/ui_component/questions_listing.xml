@@ -6,19 +6,11 @@
             <item name="deps" xsi:type="string">questions_listing.questions_listing_data_source</item>
         </item>
         <item name="spinner" xsi:type="string">questions_columns</item>
-        <item name="buttons" xsi:type="array">
-            <item name="add" xsi:type="array">
-                <item name="name" xsi:type="string">add</item>
-                <item name="label" xsi:type="string" translate="true">Add New Customer</item>
-                <item name="class" xsi:type="string">primary</item>
-                <item name="url" xsi:type="string">*/*/new</item>
-            </item>
-        </item>
-        <item name="acl" xsi:type="string">Magento_Customer::manage</item>
+        <item name="acl" xsi:type="string">Tingle_Pmeds::config</item>
     </argument>
     <dataSource name="questions_listing_data_source">
         <argument name="dataProvider" xsi:type="configurableObject">
-            <argument name="class" xsi:type="string">Magento\Framework\View\Element\UiComponent\DataProvider\DataProvider</argument>
+            <argument name="class" xsi:type="string">Tingle\Pmeds\Model\Question\Listing\DataProvider</argument>
             <argument name="name" xsi:type="string">questions_listing_data_source</argument>
             <argument name="primaryFieldName" xsi:type="string">id</argument>
             <argument name="requestFieldName" xsi:type="string">id</argument>
@@ -31,15 +23,7 @@
         </argument>
     </dataSource>
     <listingToolbar name="listing_top">
-        <argument name="data" xsi:type="array">
-            <item name="config" xsi:type="array">
-                <item name="sticky" xsi:type="boolean">true</item>
-            </item>
-        </argument>
-        <bookmark name="bookmarks"/>
         <columnsControls name="columns_controls"/>
-        <exportButton name="export_button"/>
-        <filterSearch name="fulltext"/>
         <filters name="listing_filters"/>
         <massaction name="listing_massaction">
             <argument name="data" xsi:type="array">
@@ -52,63 +36,10 @@
                     <item name="config" xsi:type="array">
                         <item name="type" xsi:type="string">delete</item>
                         <item name="label" xsi:type="string" translate="true">Delete</item>
-                        <item name="url" xsi:type="url" path="customer/index/massDelete"/>
+                        <item name="url" xsi:type="url" path="tingle/pmeds/massDelete"/>
                         <item name="confirm" xsi:type="array">
-                            <item name="title" xsi:type="string" translate="true">Delete items</item>
-                            <item name="message" xsi:type="string" translate="true">Are you sure to delete selected customers?</item>
-                        </item>
-                    </item>
-                </argument>
-            </action>
-            <action name="subscribe">
-                <argument name="data" xsi:type="array">
-                    <item name="config" xsi:type="array">
-                        <item name="type" xsi:type="string">subscribe</item>
-                        <item name="label" xsi:type="string" translate="true">Subscribe to Newsletter</item>
-                        <item name="url" xsi:type="url" path="customer/index/massSubscribe"/>
-                    </item>
-                </argument>
-            </action>
-            <action name="unsubscribe">
-                <argument name="data" xsi:type="array">
-                    <item name="config" xsi:type="array">
-                        <item name="type" xsi:type="string">unsubscribe</item>
-                        <item name="label" xsi:type="string" translate="true">Unsubscribe from Newsletter</item>
-                        <item name="url" xsi:type="url" path="customer/index/massUnsubscribe"/>
-                        <item name="confirm" xsi:type="array">
-                            <item name="title" xsi:type="string" translate="true">Unsubscribe from Newsletter</item>
-                            <item name="message" xsi:type="string" translate="true">Are you sure to unsubscribe selected customers from newsletter?</item>
-                        </item>
-                    </item>
-                </argument>
-            </action>
-            <action name="assign_to_group">
-                <argument name="data" xsi:type="array">
-                    <item name="config" xsi:type="array">
-                        <item name="type" xsi:type="string">assign_to_group</item>
-                        <item name="label" xsi:type="string" translate="true">Assign a Customer Group</item>
-                    </item>
-                </argument>
-                <argument name="actions" xsi:type="configurableObject">
-                    <argument name="class" xsi:type="string">Magento\Customer\Ui\Component\MassAction\Group\Options</argument>
-                    <argument name="data" xsi:type="array">
-                        <item name="urlPath" xsi:type="string">customer/index/massAssignGroup</item>
-                        <item name="paramName" xsi:type="string">group</item>
-                        <item name="confirm" xsi:type="array">
-                            <item name="title" xsi:type="string" translate="true">Assign a Customer Group</item>
-                            <item name="message" xsi:type="string" translate="true">Are you sure to assign selected customers to new group?</item>
-                        </item>
-                    </argument>
-                </argument>
-            </action>
-            <action name="edit">
-                <argument name="data" xsi:type="array">
-                    <item name="config" xsi:type="array">
-                        <item name="type" xsi:type="string">edit</item>
-                        <item name="label" xsi:type="string" translate="true">Edit</item>
-                        <item name="callback" xsi:type="array">
-                            <item name="provider" xsi:type="string">questions_listing.questions_listing.customer_columns_editor</item>
-                            <item name="target" xsi:type="string">editSelected</item>
+                            <item name="title" xsi:type="string" translate="true">Delete questions</item>
+                            <item name="message" xsi:type="string" translate="true">Are you sure to delete selected questions?</item>
                         </item>
                     </item>
                 </argument>
@@ -123,6 +54,44 @@
                     <item name="filter" xsi:type="string">textRange</item>
                     <item name="label" xsi:type="string" translate="true">ID</item>
                     <item name="sortOrder" xsi:type="number">20</item>
+                </item>
+            </argument>
+        </column>
+        <column name="title">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Title</item>
+                    <item name="sortOrder" xsi:type="number">30</item>
+                </item>
+            </argument>
+        </column>
+        <column name="sort_order">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Sort Order</item>
+                    <item name="sortOrder" xsi:type="number">40</item>
+                </item>
+            </argument>
+        </column>
+        <column name="required">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Magento\Config\Model\Config\Source\Yesno</item>
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">select</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/grid/columns/select</item>
+                    <item name="dataType" xsi:type="string">select</item>
+                    <item name="label" xsi:type="string" translate="true">Required</item>
+                </item>
+            </argument>
+        </column>
+        <column name="type">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="filter" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Type</item>
+                    <item name="sortOrder" xsi:type="number">60</item>
                 </item>
             </argument>
         </column>
