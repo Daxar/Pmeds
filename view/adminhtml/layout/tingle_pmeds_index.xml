@@ -3,7 +3,6 @@
     <body>
         <referenceContainer name="content">
             <uiComponent name="questions_listing"/>
-            <block class="Tingle\Pmeds\Block\Adminhtml\Button\QuestionTypes" name="products_list"/>
         </referenceContainer>
     </body>
 </page>

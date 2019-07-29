@@ -26,20 +26,32 @@ class Save extends AbstractAction
      */
     function execute()
     {
+        $redirect = $this->resultRedirectFactory->create();
         $data = $this->getRequest()->getPostValue();
-        /** @var \Tingle\Pmeds\Api\Data\QuestionsInterface $model */
-        $model = $this->modelFactory->create();
 
-        $model->setTitle($data['title']);
+        if ($id = $this->getRequest()->getParam('id')) {
+            $model = $this->repository->getById($id);
+        } else {
+            $model = $this->modelFactory->create();
+        }
+
+        /** @var \Tingle\Pmeds\Api\Data\QuestionsInterface $model */
+        $model->setTitle($data['title'])
+            ->setSortOrder($data['sort_order'])
+            ->setRequired($data['required'])
+            ->setOptions($data['options'] ? $data['options'] : null)
+            ->setAnswer($data['answer']);
 
         try {
             $this->repository->save($model);
             $this->messageManager->addSuccessMessage(__('Question successfully saved.'));
+            if ($this->getRequest()->getParam('back')) {
+                return $redirect->setPath(self::BASE_ACTION_PATH . '/edit', ['id' => $model->getId()]);
+            }
         } catch (\Exception $e) {
             $this->messageManager->addErrorMessage($e->getMessage());
         }
 
-        $redirect = $this->resultRedirectFactory->create();
-        return $redirect->setPath('tingle/pmeds/index');
+        return $redirect->setPath(self::BASE_ACTION_PATH);
     }
 }

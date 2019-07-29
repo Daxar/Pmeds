@@ -24,6 +24,11 @@ interface QuestionsInterface
     const FIELD_ANSWER = 'answer';
 
     /**
+     * Data persistor storage key
+     */
+    const DATA_PERSISTOR_KEY = self::TABLE_NAME;
+
+    /**
      * Config XML path
      */
     const XML_PATH_SOMETHING = 'something';
