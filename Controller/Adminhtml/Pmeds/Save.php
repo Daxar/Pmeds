@@ -35,12 +35,12 @@ class Save extends AbstractAction
             $model = $this->modelFactory->create();
         }
 
-        /** @var \Tingle\Pmeds\Api\Data\QuestionsInterface $model */
+        /** @var \Tingle\Pmeds\Model\Questions $model */
         $model->setTitle($data['title'])
             ->setSortOrder($data['sort_order'])
             ->setRequired($data['required'])
             ->setOptions($data['options'] ? $data['options'] : null)
-            ->setAnswer($data['answer']);
+            ->setAnswer($data['answer'] ? $data['answer'] : null);
 
         try {
             $this->repository->save($model);

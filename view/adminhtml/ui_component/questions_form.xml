@@ -130,7 +130,6 @@
                             <item name="dataType" xsi:type="string">text</item>
                             <item name="label" xsi:type="string" translate="true">ID</item>
                             <item name="visible" xsi:type="boolean">false</item>
-                            <!--<item name="dataType" xsi:type="string">text</item>-->
                             <item name="formElement" xsi:type="string">input</item>
                             <item name="dataScope" xsi:type="string">row_id</item>
                         </item>
@@ -182,10 +181,11 @@
             <argument name="data" xsi:type="array">
                 <item name="options" xsi:type="object">Tingle\Pmeds\Ui\Options\Source</item>
                 <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">Right answer</item>
+                    <item name="formElement" xsi:type="string">select</item>
                     <item name="sortOrder" xsi:type="number">50</item>
-                    <item name="formElement" xsi:type="string">multiselect</item>
-                    <item name="label" xsi:type="string" translate="true">Use in Search Results Layered Navigation</item>
-                    <item name="notice" xsi:type="string" translate="true">Can be used only with catalog input type Dropdown, Multiple Select and Price.</item>
+                    <item name="notice" xsi:type="string" translate="true">Options will appear after you add them and click 'Save and Continue Edit'.</item>
                 </item>
             </argument>
         </field>

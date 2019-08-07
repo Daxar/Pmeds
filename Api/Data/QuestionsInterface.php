@@ -28,6 +28,8 @@ interface QuestionsInterface
      */
     const DATA_PERSISTOR_KEY = self::TABLE_NAME;
 
+    const DATA_PERSISTOR_OPTIONS_KEY = self::DATA_PERSISTOR_KEY . '_' . self::FIELD_OPTIONS;
+
     /**
      * Config XML path
      */

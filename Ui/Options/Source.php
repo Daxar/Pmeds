@@ -16,14 +16,19 @@ class Source implements OptionSourceInterface
 
     public function toOptionArray()
     {
-        if ($this->dataPersistor->get(Config::DATA_PERSISTOR_KEY)) {
-            var_dump($this->dataPersistor->get(Config::DATA_PERSISTOR_KEY));
+        $newOptions = [['value' => '', 'label' => '-- none --']];
+
+        if ($options = $this->dataPersistor->get(Config::DATA_PERSISTOR_OPTIONS_KEY)) {
+            foreach($options as $option) {
+                $newOptions[] = [
+                    'value' => $option->record_id,
+                    'label' => $option->row_name
+                ];
+            }
+
+            $this->dataPersistor->clear(Config::DATA_PERSISTOR_OPTIONS_KEY);
         }
 
-        return [
-            ['value' => 'inline', 'label' => __('Inline')],
-            ['value' => 'bottomright', 'label' => __('Bottom Right')],
-            ['value' => 'bottomleft', 'label' => __('Bottom Left')],
-        ];
+        return $newOptions;
     }
 }

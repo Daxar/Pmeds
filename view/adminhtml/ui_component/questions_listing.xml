@@ -56,6 +56,14 @@
         <paging name="listing_paging"/>
     </listingToolbar>
     <columns name="questions_columns">
+        <selectionsColumn name="ids">
+            <argument name="data" xsi:type="array">
+                <item name="config" xsi:type="array">
+                    <item name="indexField" xsi:type="string">id</item>
+                    <item name="sortOrder" xsi:type="number">0</item>
+                </item>
+            </argument>
+        </selectionsColumn>
         <column name="id">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
@@ -94,14 +102,13 @@
                 </item>
             </argument>
         </column>
-        <column name="type">
+        <actionsColumn name="actions" class="Tingle\Pmeds\Ui\Component\Listing\Columns\QuestionActions">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="filter" xsi:type="string">text</item>
-                    <item name="label" xsi:type="string" translate="true">Type</item>
-                    <item name="sortOrder" xsi:type="number">60</item>
+                    <item name="indexField" xsi:type="string">id</item>
+                    <item name="sortOrder" xsi:type="number">50</item>
                 </item>
             </argument>
-        </column>
+        </actionsColumn>
     </columns>
 </listing>

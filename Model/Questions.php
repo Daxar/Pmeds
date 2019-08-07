@@ -85,4 +85,16 @@ class Questions extends AbstractModel implements QuestionsInterface
     {
         return $this->setData(self::FIELD_TYPE, $type);
     }
+
+    public function beforeSave()
+    {
+        $this->setOptions(json_encode($this->getOptions()));
+        return parent::beforeSave();
+    }
+
+    public function afterLoad()
+    {
+        $this->setOptions(json_decode($this->getOptions()));
+        return parent::afterLoad();
+    }
 }
