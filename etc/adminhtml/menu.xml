@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Backend:etc/menu.xsd">
+    <menu>
+        <add id="Tingle_Pmeds::crud" title="P-Meds" translate="title" module="Tingle_Pmeds" sortOrder="35" parent="Magento_Catalog::catalog" dependsOnModule="Tingle_Pmeds" resource="Tingle_Pmeds::config"/>
+        <add id="Tingle_Pmeds::crud_listing" title="Questions" translate="title" module="Tingle_Pmeds" sortOrder="35" parent="Tingle_Pmeds::crud" action="tingle/pmeds/" resource="Tingle_Pmeds::config"/>
+    </menu>
+</config>
