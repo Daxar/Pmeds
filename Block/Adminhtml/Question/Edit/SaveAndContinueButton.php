@@ -9,6 +9,8 @@ use Magento\Framework\View\Element\UiComponent\Control\ButtonProviderInterface;
 class SaveAndContinueButton extends AbstractButton implements ButtonProviderInterface
 {
     /**
+     * Build 'Save and Continue Edit' button
+     *
      * @return array
      */
     public function getButtonData()

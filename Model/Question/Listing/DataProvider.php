@@ -7,11 +7,8 @@ use Magento\Ui\DataProvider\AbstractDataProvider;
 class DataProvider extends AbstractDataProvider
 {
     /**
-     * @var array
-     */
-    protected $loadedData;
-
-    /**
+     * DataProvider constructor
+     *
      * @param string $name
      * @param string $primaryFieldName
      * @param string $requestFieldName

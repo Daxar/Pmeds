@@ -17,6 +17,8 @@ class QuestionActions extends Column
     protected $urlBuilder;
 
     /**
+     * QuestionActions constructor
+     *
      * @param ContextInterface $context
      * @param UiComponentFactory $uiComponentFactory
      * @param UrlInterface $urlBuilder

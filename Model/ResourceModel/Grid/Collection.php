@@ -19,6 +19,7 @@ class Collection extends SearchResult
 
     /**
      * Collection constructor.
+     *
      * @param EntityFactory $entityFactory
      * @param Logger $logger
      * @param FetchStrategy $fetchStrategy

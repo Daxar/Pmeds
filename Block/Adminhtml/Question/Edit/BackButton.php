@@ -6,6 +6,8 @@ use Magento\Framework\View\Element\UiComponent\Control\ButtonProviderInterface;
 class BackButton extends AbstractButton implements ButtonProviderInterface
 {
     /**
+     * Build '<- Back' button
+     *
      * @return array
      */
     public function getButtonData()

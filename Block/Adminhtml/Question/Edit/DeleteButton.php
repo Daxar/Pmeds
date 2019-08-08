@@ -6,7 +6,7 @@ use Magento\Framework\View\Element\UiComponent\Control\ButtonProviderInterface;
 class DeleteButton extends AbstractButton implements ButtonProviderInterface
 {
     /**
-     * Delete button
+     * Build delete button
      *
      * @return array
      */
@@ -15,7 +15,7 @@ class DeleteButton extends AbstractButton implements ButtonProviderInterface
         return [
             'id' => 'delete',
             'label' => __('Delete'),
-            'on_click' => "deleteConfirm('" .__('Are you sure you want to delete this category?') ."', '"
+            'on_click' => "deleteConfirm('" .__('Are you sure you want to delete this question?') ."', '"
                 . $this->getDeleteUrl() . "', {data: {}})",
             'class' => 'delete',
             'sort_order' => 30
@@ -23,6 +23,8 @@ class DeleteButton extends AbstractButton implements ButtonProviderInterface
     }
 
     /**
+     * Build delete url
+     *
      * @return string
      */
     protected function getDeleteUrl()

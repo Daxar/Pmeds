@@ -32,7 +32,7 @@ interface QuestionsRepositoryInterface
 
     /**
      * @param SearchCriteriaInterface $searchCriteria
-     * @return array TODO:: Return type
+     * @return array TODO:: Return type & implement it
      */
     public function getList(SearchCriteriaInterface $searchCriteria);
 }

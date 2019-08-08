@@ -7,13 +7,26 @@ use Tingle\Pmeds\Api\Data\QuestionsInterface as Config;
 
 class Source implements OptionSourceInterface
 {
+    /**
+     * @var DataPersistorInterface
+     */
     private $dataPersistor;
 
+    /**
+     * Source constructor.
+     *
+     * @param DataPersistorInterface $dataPersistor
+     */
     public function __construct(DataPersistorInterface $dataPersistor)
     {
         $this->dataPersistor = $dataPersistor;
     }
 
+    /**
+     * Build options
+     *
+     * @return array
+     */
     public function toOptionArray()
     {
         $newOptions = [['value' => '', 'label' => '-- none --']];

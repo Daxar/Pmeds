@@ -6,16 +6,13 @@ use Magento\Framework\View\Element\AbstractBlock;
 
 class AbstractButton extends AbstractBlock
 {
-    protected $context;
-
-    public function __construct(
-        Context $context,
-        array $data = []
-    ) {
-        parent::__construct($context, $data);
-        $this->context = $context;
-    }
-
+    /**
+     * Get|build url for provided path
+     *
+     * @param string $route
+     * @param array $params
+     * @return string
+     */
     public function getUrl($route = '', $params = [])
     {
         return $this->_urlBuilder->getUrl($route, $params);

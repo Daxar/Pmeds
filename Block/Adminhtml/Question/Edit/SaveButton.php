@@ -6,7 +6,7 @@ use Magento\Framework\View\Element\UiComponent\Control\ButtonProviderInterface;
 class SaveButton extends AbstractButton implements ButtonProviderInterface
 {
     /**
-     * Save button
+     * Build save button
      *
      * @return array
      */

@@ -9,10 +9,23 @@ use Tingle\Pmeds\Api\QuestionsRepositoryInterface;
 
 class Edit extends AbstractAction
 {
+    /**
+     * @var DataPersistorInterface
+     */
     private $dataPersistor;
 
+    /**
+     * @var QuestionsRepositoryInterface
+     */
     private $repo;
 
+    /**
+     * Edit constructor.
+     *
+     * @param Action\Context $context
+     * @param DataPersistorInterface $dataPersistor
+     * @param QuestionsRepositoryInterface $repo
+     */
     public function __construct(
         Action\Context $context,
         DataPersistorInterface $dataPersistor,
@@ -23,6 +36,9 @@ class Edit extends AbstractAction
         $this->repo = $repo;
     }
 
+    /**
+     * @inheritDoc
+     */
     function execute()
     {
         /** @var \Magento\Framework\View\Result\Page $resultPage */

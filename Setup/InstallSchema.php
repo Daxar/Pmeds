@@ -57,12 +57,6 @@ class InstallSchema implements InstallSchemaInterface
                 '64k',
                 [],
                 'Answer'
-            )->addColumn(
-                Config::FIELD_TYPE,
-                Table::TYPE_TEXT,
-                64,
-                [],
-                'Type'
             )->setComment(
                 'Tingle Pmeds questions'
             );
