@@ -6,10 +6,9 @@
                 <item name="label" xsi:type="string" translate="true">P-Meds questions</item>
                 <item name="collapsible" xsi:type="boolean">true</item>
                 <item name="sortOrder" xsi:type="number">75</item>
+                <item name="visible" xsi:type="boolean">false</item>
             </item>
         </argument>
-<!--   TODO: Move this to modifiers, and render it if product is in 'P-Meds' attribute set only     -->
-<!--   https://devdocs.magento.com/guides/v2.3/ui_comp_guide/concepts/ui_comp_modifier_concept.html     -->
         <container name="questions_group">
             <field name="title">
                 <argument name="data" xsi:type="array">
@@ -19,7 +18,6 @@
                         <item name="label" xsi:type="string">Questionnaire intro text</item>
                         <item name="formElement" xsi:type="string">textarea</item>
                         <item name="scopeLabel" xsi:type="string">[STORE VIEW]</item>
-                        <!--        TODO: Remove                -->
                         <item name="notice" xsi:type="string" translate="true">Should this field be a required* one ?</item>
                         <item name="validation" xsi:type="array">
                             <item name="required-entry" xsi:type="boolean">true</item>
@@ -35,7 +33,6 @@
                         <item name="label" xsi:type="string" translate="true">Questions</item>
                         <item name="formElement" xsi:type="string">multiselect</item>
                         <item name="scopeLabel" xsi:type="string">[STORE VIEW]</item>
-                        <!--        TODO: Remove                -->
                         <item name="notice" xsi:type="string" translate="true">Should this field be a required* one ?</item>
                         <item name="sortOrder" xsi:type="number">20</item>
                     </item>
