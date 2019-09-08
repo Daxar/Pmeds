@@ -71,18 +71,10 @@
                         <field id="enable">1</field>
                     </depends>
                 </field>
-                <field id="add_to_cart_enable" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
-                    <label>Enable Custom Add To Cart text</label>
-                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
-                    <depends>
-                        <field id="enable">1</field>
-                    </depends>
-                </field>
                 <field id="add_to_cart_text" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Button text</label>
                     <comment>'Add To Cart' text will be replaces with this one.</comment>
                     <depends>
-                        <field id="add_to_cart_enable">1</field>
                         <field id="enable">1</field>
                     </depends>
                 </field>

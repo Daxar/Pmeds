@@ -1,0 +1,16 @@
+<form action="<?php echo $block->getFormAction() ?>" method="post">
+    <input name="firstname" type="text">
+    <input name="lastname" type="text">
+    <input name="phone" type="text">
+    <input name="bookingTime" type="date">
+    <button type="submit" name="save_and_share" title="Stuff" class="action share">
+        <span>SubmitStuff</span>
+    </button>
+</form>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Tingle_Pmeds/js/form/questions-modal": {}
+        }
+    }
+</script>
