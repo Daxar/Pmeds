@@ -21,6 +21,8 @@ interface QuestionsInterface
 
     const FIELD_ANSWER = 'answer';
 
+    const FIELD_TYPE_ID = 'type_id';
+
     /**
      * Data persistor storage key
      */
@@ -69,11 +71,18 @@ interface QuestionsInterface
     public function getOptions();
 
     /**
-     * Get right answer to the question
+     * Get correct answer to the question
      *
      * @return string
      */
     public function getAnswer();
+
+    /**
+     * Get question type id
+     *
+     * @return integer
+     */
+    public function getTypeId();
 
     /**
      * Set question title
@@ -108,10 +117,18 @@ interface QuestionsInterface
     public function setOptions($options);
 
     /**
-     * Set question right answer
+     * Set question's correct answer
      *
      * @param string $answer
      * @return $this
      */
     public function setAnswer($answer);
+
+    /**
+     * Set question type id
+     *
+     * @param integer $typeId
+     * @return $this
+     */
+    public function setTypeId($typeId);
 }

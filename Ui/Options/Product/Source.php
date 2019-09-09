@@ -6,7 +6,7 @@ use Magento\Framework\Data\OptionSourceInterface;
 class Source implements OptionSourceInterface
 {
     /**
-     * Build options
+     * Build options //TODO: Proper options here
      *
      * @return array
      */

@@ -18,4 +18,11 @@ interface ConfigInterface
     const XML_PATH_ENABLE_AT_CATEGORY_PAGE     = self::XML_PATH_BASE . 'add_at_product_listing'; // category page
     const XML_PATH_ENABLE_AT_PRODUCT_PAGE      = self::XML_PATH_BASE . 'add_at_product_page';
     const XML_PATH_ADD_TO_CART_TEXT            = self::XML_PATH_BASE . 'add_to_cart_text';
+
+    /**
+     * Get all possible question types
+     *
+     * @return array
+     */
+    public function getTypes();
 }

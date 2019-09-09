@@ -19,6 +19,10 @@ class InstallSchema implements InstallSchemaInterface
 
         $installer->startSetup();
 
+        if ($installer->getConnection()->isTableExists($installer->getTable(Config::TABLE_NAME))) {
+            $installer->getConnection()->dropTable($installer->getTable(Config::TABLE_NAME));
+        }
+
         $table = $installer->getConnection()->newTable(
                 $installer->getTable(Config::TABLE_NAME)
             )->addColumn(
@@ -33,6 +37,12 @@ class InstallSchema implements InstallSchemaInterface
                 null,
                 [],
                 'Sort Order'
+            )->addColumn(
+                Config::FIELD_TYPE_ID,
+                Table::TYPE_INTEGER,
+                null,
+                [],
+                'Question type id'
             )->addColumn(
                 Config::FIELD_TITLE,
                 Table::TYPE_TEXT,

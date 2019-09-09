@@ -70,9 +70,9 @@ class Questions extends AbstractModel implements QuestionsInterface
     /**
      * @inheritdoc
      */
-    public function getType()
+    public function getTypeId()
     {
-        return $this->getData(self::FIELD_TYPE);
+        return $this->getData(self::FIELD_TYPE_ID);
     }
 
     /**
@@ -118,9 +118,9 @@ class Questions extends AbstractModel implements QuestionsInterface
     /**
      * @inheritdoc
      */
-    public function setType($type)
+    public function setTypeId($typeId)
     {
-        return $this->setData(self::FIELD_TYPE, $type);
+        return $this->setData(self::FIELD_TYPE_ID, $typeId);
     }
 
     /**

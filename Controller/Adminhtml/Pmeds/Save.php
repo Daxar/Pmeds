@@ -22,7 +22,7 @@ class Save extends AbstractAction
     }
 
     /**
-     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface|void
+     * @return \Magento\Framework\App\ResponseInterface|\Magento\Framework\Controller\ResultInterface
      */
     function execute()
     {
@@ -39,8 +39,9 @@ class Save extends AbstractAction
         $model->setTitle($data['title'])
             ->setSortOrder($data['sort_order'])
             ->setRequired($data['required'])
-            ->setOptions($data['options'] ? $data['options'] : null)
-            ->setAnswer($data['answer'] ? $data['answer'] : null);
+            ->setTypeId($data['type_id'])
+            ->setOptions(isset($data['options']) ? $data['options'] : null)
+            ->setAnswer(isset($data['answer']) ? $data['answer'] : null);
 
         try {
             $this->repository->save($model);
