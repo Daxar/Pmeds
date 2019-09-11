@@ -25,4 +25,11 @@ interface ConfigInterface
      * @return array
      */
     public function getTypes();
+
+    /**
+     * Return id of Pmeds attribute set, false otherwise
+     *
+     * @return integer|false
+     */
+    public function getPmedsAttributeSetId();
 }

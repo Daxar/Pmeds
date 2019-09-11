@@ -18,7 +18,8 @@ define([
         },
 
         attributeSetWasSelected: function (value) {
-            this.setTabVisibility(value == this.targetAttributeSetId);
+            // this.value - Comes from Tingle\Pmeds\Ui\DataProvider\Product\Form\Modifier\Pmeds::getVisibilityController()->value
+            this.setTabVisibility(value == this.value);
         },
 
         setTabVisibility: function (boolean) {

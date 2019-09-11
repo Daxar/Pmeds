@@ -49,7 +49,11 @@ class Edit extends AbstractAction
                 $model->setOptions(json_decode($model->getOptions()));
             }
             $this->dataPersistor->set(Config::DATA_PERSISTOR_OPTIONS_KEY, $model->getOptions());
+            $resultPage->getConfig()->getTitle()->prepend(__('Edit question'));
+        } else {
+            $resultPage->getConfig()->getTitle()->prepend(__('Add question'));
         }
+
         return $resultPage;
     }
 }

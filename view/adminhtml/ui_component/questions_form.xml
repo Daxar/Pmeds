@@ -94,6 +94,8 @@
                     <item name="default" xsi:type="string">0</item>
                     <item name="validation" xsi:type="array">
                         <item name="required-entry" xsi:type="boolean">true</item>
+                        <item name="validate-number" xsi:type="boolean">true</item>
+                        <item name="validate-zero-or-greater" xsi:type="boolean">true</item>
                     </item>
                 </item>
             </argument>

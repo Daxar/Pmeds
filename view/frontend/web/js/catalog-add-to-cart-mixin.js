@@ -30,6 +30,7 @@ define([
         return $.widget('mage.catalogAddToCart', catalogAddToCart, {
             submitForm: function (form) {
                 console.log('stuff!');
+                console.log(form);
                 self = this;
                 self.disableAddToCartButton(form);
                 if (enabledAtCategoryPage) {
@@ -43,8 +44,8 @@ define([
 
             checkForQuestions: function (form) {
                 self = this;
-                // console.log(form);
-                const sku = '24-MB01'; //TODO: Add sku properly
+                const sku = '24-MB01'; // TODO: Add sku properly
+                // const sku = $(form).attr('data-product-sku'); // TODO: Add sku properly
                 $.ajax({
                     url: urlBuilder.build('pmeds/questions/form/sku/' + sku),
                     type: 'GET',

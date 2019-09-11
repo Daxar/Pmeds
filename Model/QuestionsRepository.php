@@ -26,6 +26,8 @@ class QuestionsRepository implements QuestionsRepositoryInterface
      */
     private $collectionFactory;
 
+    private $searchResultsFactory;
+
     /**
      * QuestionsRepository constructor.
      * @param QuestionsFactory $modelFactory
@@ -35,11 +37,13 @@ class QuestionsRepository implements QuestionsRepositoryInterface
     public function __construct(
         ModelFactory $modelFactory,
         ResourceModel $resource,
-        CollectionFactory $collectionFactory
+        CollectionFactory $collectionFactory,
+        \Magento\Framework\Api\SearchResultsFactory $searchResultsFactory
     ) {
         $this->modelFactory = $modelFactory;
         $this->resource = $resource;
         $this->collectionFactory = $collectionFactory;
+        $this->searchResultsFactory = $searchResultsFactory;
     }
 
     /**
@@ -87,6 +91,14 @@ class QuestionsRepository implements QuestionsRepositoryInterface
      */
     public function getList(SearchCriteriaInterface $searchCriteria)
     {
-        //TODO: Implement it
+        /** @var \Tingle\Pmeds\Model\ResourceModel\Questions\Collection $collection */
+        $collection = $this->collectionFactory->create();
+
+        /** @var \Magento\Framework\Api\SearchResults $searchResult */
+        $searchResult = $this->searchResultsFactory->create();
+        $searchResult->setSearchCriteria($searchCriteria);
+        $searchResult->setItems($collection->getItems());
+        $searchResult->setTotalCount($collection->getSize());
+        return $searchResult->getItems();
     }
 }

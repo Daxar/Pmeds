@@ -7,7 +7,7 @@ use Magento\Framework\View\LayoutInterface;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Eav\Api\AttributeSetRepositoryInterface;
-use Tingle\Pmeds\Block\Form as QuestionsForm;
+use Tingle\Pmeds\Block\Form\Form as QuestionsForm;
 use Tingle\Pmeds\Setup\InstallData;
 
 // TODO: Beautify this class

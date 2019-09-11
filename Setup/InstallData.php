@@ -9,12 +9,18 @@ use Magento\Eav\Setup\EavSetup;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\InstallDataInterface;
-use Magento\Eav\Api\AttributeSetRepositoryInterface;
-use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
+use Magento\Eav\Setup\EavSetupFactory;
+use Magento\Catalog\Model\Product;
+use Tingle\Pmeds\Api\Data\ConfigInterface;
 
 class InstallData implements InstallDataInterface
 {
     const ATTRIBUTE_SET_NAME = 'P-Meds';
+
+    const QUESTIONAIRE_INTRO_TEXT = 'questions_intro_text';
+
+    const SELECTED_QUESTIONS_LIST = 'selected_questions_list';
 
     /**
      * @var Config
@@ -37,14 +43,11 @@ class InstallData implements InstallDataInterface
     private $eavSetup;
 
     /**
-     * @var AttributeSetRepositoryInterface
+     * @var ConfigInterface
      */
-    private $attributeSetRepository;
+    private $config;
 
-    /**
-     * @var SearchCriteriaBuilder
-     */
-    private $searchCriteriaBuilder;
+    private $eavSetupFactory;
 
     /**
      * Create new attribute set.
@@ -53,23 +56,23 @@ class InstallData implements InstallDataInterface
      * @param AttributeSetManagementInterface $attributeSetManagement
      * @param EavSetup $eavSetup
      * @param Config $eavConfig
-     * @param AttributeSetRepositoryInterface $attributeSetRepository
-     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param ConfigInterface $config
+     * @param EavSetupFactory $eavSetupFactory
      */
     public function __construct(
         AttributeSetInterfaceFactory $attributeSetInterfaceFactory,
         AttributeSetManagementInterface $attributeSetManagement,
         EavSetup $eavSetup,
         Config $eavConfig,
-        AttributeSetRepositoryInterface $attributeSetRepository,
-        SearchCriteriaBuilder $searchCriteriaBuilder
+        ConfigInterface $config,
+        EavSetupFactory $eavSetupFactory
     ) {
         $this->eavConfig = $eavConfig;
         $this->attributeSetInterfaceFactory = $attributeSetInterfaceFactory;
         $this->attributeSetManagement = $attributeSetManagement;
         $this->eavSetup = $eavSetup;
-        $this->attributeSetRepository = $attributeSetRepository;
-        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
+        $this->config = $config;
+        $this->eavSetupFactory = $eavSetupFactory;
     }
 
     /**
@@ -85,7 +88,7 @@ class InstallData implements InstallDataInterface
     {
         $setup->startSetup();
 
-        if (!$this->attributeAlreadyExists()) {
+        if (!$this->config->getPmedsAttributeSetId()) {
             $productEntityId = $this->eavConfig->getEntityType(ProductAttributeInterface::ENTITY_TYPE_CODE)->getId();
             $defaultAttributeSetId = $this->eavSetup->getDefaultAttributeSetId($productEntityId);
 
@@ -98,26 +101,60 @@ class InstallData implements InstallDataInterface
             );
         }
 
+        $this->addProductAttributes($setup);
+
         $setup->endSetup();
     }
 
     /**
-     * Return true|false if the attribute already exists
-     *
-     * @return boolean
+     * @param \Magento\Framework\Setup\ModuleDataSetupInterface $setup
      */
-    private function attributeAlreadyExists()
+    private function addProductAttributes($setup)
     {
-        $searchCriteria = $this->searchCriteriaBuilder->create();
-        $attributeSets = $this->attributeSetRepository->getList($searchCriteria)->getItems();
+        $this->addQuestionnaireIntroAttribute($setup);
+//        $this->addSelectedQuestionsAttribute($setup);
+    }
 
-        /** @var \Magento\Eav\Api\Data\AttributeSetInterface $attributeSet */
-        foreach ($attributeSets as $attributeSet) {
-            if ($attributeSet->getAttributeSetName() === self::ATTRIBUTE_SET_NAME) {
-                return true;
-            }
-        }
+    private function addQuestionnaireIntroAttribute($setup)
+    {
+        $eavSetup = $this->eavSetupFactory->create(['setup' => $setup]);
 
-        return false;
+        $eavSetup->addAttribute(
+            Product::ENTITY,
+            self::QUESTIONAIRE_INTRO_TEXT,
+            [
+                'type' => 'varchar',
+                'label' => 'Questionnaire intro text',
+                'input' => 'string',
+                'required' => false,
+                'global' => ScopedAttributeInterface::SCOPE_WEBSITE,
+                'visible' => false,
+                'user_defined' => false,
+                'unique' => false,
+                'group' => 'General'
+            ]
+        );
+    }
+
+    private function addSelectedQuestionsAttribute($setup)
+    {
+        $eavSetup = $this->eavSetupFactory->create(['setup' => $setup]);
+
+        $eavSetup->addAttribute(
+            Product::ENTITY,
+            self::SELECTED_QUESTIONS_LIST,
+            [
+                'type' => 'varchar',
+                'label' => 'Selected questions list',
+                'input' => 'string',
+//                'backend' => Backend::class,
+                'required' => false,
+                'global' => ScopedAttributeInterface::SCOPE_WEBSITE,
+                'visible' => true,
+                'user_defined' => false,
+                'unique' => false,
+                'group' => 'General'
+            ]
+        );
     }
 }
