@@ -11,6 +11,7 @@ interface QuestionsRepositoryInterface
      *
      * @param integer $id
      * @return \Tingle\Pmeds\Api\Data\QuestionsInterface
+     * @throws \Exception
      */
     public function getById($id);
 
@@ -18,7 +19,8 @@ interface QuestionsRepositoryInterface
      * Delete question from persistent storage
      *
      * @param \Tingle\Pmeds\Api\Data\QuestionsInterface $model
-     * @return true|\Exception
+     * @return true
+     * @throws \Exception
      */
     public function delete($model);
 
@@ -27,12 +29,13 @@ interface QuestionsRepositoryInterface
      *
      * @param \Tingle\Pmeds\Api\Data\QuestionsInterface $model
      * @return \Tingle\Pmeds\Api\Data\QuestionsInterface
+     * @throws \Exception
      */
     public function save($model);
 
     /**
      * @param SearchCriteriaInterface $searchCriteria
-     * @return array TODO:: Return type & implement it
+     * @return \Magento\Framework\Api\AbstractExtensibleObject[]
      */
     public function getList(SearchCriteriaInterface $searchCriteria);
 }

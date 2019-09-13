@@ -1,47 +1,37 @@
 <?php declare(strict_types=1);
 namespace Tingle\Pmeds\Block\Adminhtml\Product;
 
-use Magento\Eav\Model\ResourceModel\Entity\Attribute\Set\CollectionFactory;
-use Magento\Eav\Model\Entity\Attribute\Set;
-use Tingle\Pmeds\Setup\InstallData as Config;
+use Tingle\Pmeds\Api\Data\ConfigInterface;
 use Magento\Backend\Block\Template;
 
 class Tab extends Template
 {
     /**
-     * @var CollectionFactory
+     * @var ConfigInterface
      */
-    protected $attributeSetCollection;
+    protected $config;
 
     /**
      * Tab constructor.
      *
      * @param Template\Context $context
-     * @param CollectionFactory $attributeSetCollection
+     * @param ConfigInterface $config
      * @param array $data
      */
     public function __construct(
         Template\Context $context,
-        CollectionFactory $attributeSetCollection,
+        ConfigInterface $config,
         array $data = []
     ) {
         parent::__construct($context, $data);
-        $this->attributeSetCollection = $attributeSetCollection;
+        $this->config = $config;
     }
 
     /**
-     * @return integer
+     * @return false|int
      */
     public function getPmedsAttributeSetId()
     {
-        $attributeSetCollection = $this->attributeSetCollection->create()
-            ->addFieldToSelect(Set::KEY_ATTRIBUTE_SET_ID)
-            ->addFieldToFilter(Set::KEY_ATTRIBUTE_SET_NAME, Config::ATTRIBUTE_SET_NAME)
-            ->getFirstItem()
-            ->toArray();
-
-        $attributeSetId = (int) $attributeSetCollection[Set::KEY_ATTRIBUTE_SET_ID];
-
-        return $attributeSetId;
-  }
+        return $this->config->getPmedsAttributeSetId();
+    }
 }

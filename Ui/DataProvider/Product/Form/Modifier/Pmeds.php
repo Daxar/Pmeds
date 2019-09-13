@@ -1,16 +1,19 @@
 <?php declare(strict_types=1);
 namespace Tingle\Pmeds\Ui\DataProvider\Product\Form\Modifier;
 
+use Magento\Framework\Registry;
+use Magento\Framework\Api\SearchCriteriaBuilder;
+use Magento\Framework\Api\FilterBuilder;
 use Magento\Catalog\Ui\DataProvider\Product\Form\Modifier\AbstractModifier;
+use Magento\Ui\Component\Form\Element\DataType\Text;
 use Magento\Ui\Component\Form\Element\MultiSelect;
 use Magento\Ui\Component\Form\Element\Textarea;
-use Magento\Ui\Component\Form\Element\Hidden;
 use Magento\Ui\Component\Form\Fieldset;
 use Magento\Ui\Component\Form\Field;
-use Magento\Framework\Registry;
 use Tingle\Pmeds\Ui\Options\Product\Source;
 use Tingle\Pmeds\Api\Data\ConfigInterface;
-use Tingle\Pmeds\Setup\InstallData as Config;
+use Tingle\Pmeds\Api\QuestionsRepositoryInterface;
+use Tingle\Pmeds\Api\ProductQuestionsRepositoryInterface;
 
 class Pmeds extends AbstractModifier
 {
@@ -35,20 +38,51 @@ class Pmeds extends AbstractModifier
     private $product;
 
     /**
+     * @var QuestionsRepositoryInterface
+     */
+    private $questionsRepository;
+
+    /**
+     * @var ProductQuestionsRepositoryInterface
+     */
+    private $productQuestionsRepository;
+
+    /**
+     * @var SearchCriteriaBuilder
+     */
+    private $searchCriteriaBuilder;
+
+    /**
+     * @var FilterBuilder
+     */
+    private $filterBuilder;
+
+    /**
      * Pmeds constructor.
-     *
      * @param Source $options
      * @param ConfigInterface $config
      * @param Registry $registry
+     * @param QuestionsRepositoryInterface $questionsRepository
+     * @param ProductQuestionsRepositoryInterface $productQuestionsRepository
+     * @param SearchCriteriaBuilder $searchCriteriaBuilder
+     * @param FilterBuilder $filterBuilder
      */
     public function __construct(
         Source $options,
         ConfigInterface $config,
-        Registry $registry
+        Registry $registry,
+        QuestionsRepositoryInterface $questionsRepository,
+        ProductQuestionsRepositoryInterface $productQuestionsRepository,
+        SearchCriteriaBuilder $searchCriteriaBuilder,
+        FilterBuilder $filterBuilder
     ) {
         $this->options = $options;
         $this->config = $config;
         $this->registry = $registry;
+        $this->questionsRepository = $questionsRepository;
+        $this->productQuestionsRepository = $productQuestionsRepository;
+        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
+        $this->filterBuilder = $filterBuilder;
     }
 
     /**
@@ -66,6 +100,17 @@ class Pmeds extends AbstractModifier
     {
         $this->product = $this->registry->registry('product');
 
+        return $this->addPmedsTab($meta);
+    }
+
+    /**
+     * Build 'Pmeds Questions' tab
+     *
+     * @param array $meta
+     * @return array
+     */
+    protected function addPmedsTab($meta)
+    {
         $meta = array_replace_recursive(
             $meta,
             [
@@ -110,32 +155,8 @@ class Pmeds extends AbstractModifier
                 ],
             ],
             'children' => [
-                Config::QUESTIONAIRE_INTRO_TEXT       => $this->getQuestionnaireIntroField(),
-                Config::SELECTED_QUESTIONS_LIST       => $this->getQuestionsField(),
-                'questions_tab_visibility_controller' => $this->getVisibilityController()
-            ]
-        ];
-    }
-
-    /**
-     * Selected questions field (multi-select) declaration
-     *
-     * @return array
-     */
-    protected function getQuestionsField()
-    {
-        return [
-            'arguments' => [
-                'data' => [
-                    'config' => [
-                        'formElement' => MultiSelect::NAME,
-                        'componentType' => Field::NAME,
-                        'options' => $this->options->toOptionArray(),
-                        'visible' => true,
-                        'required' => false,
-                        'label' => __('Questions')
-                    ]
-                ]
+                ConfigInterface::QUESTIONNAIRE_INTRO_TEXT => $this->getQuestionnaireIntroField(),
+                ConfigInterface::SELECTED_QUESTIONS_LIST => $this->buildSelectedOptions()
             ]
         ];
     }
@@ -154,9 +175,10 @@ class Pmeds extends AbstractModifier
                         'formElement' => Textarea::NAME,
                         'componentType' => Field::NAME,
                         'visible' => true,
+                        'dataScope' => ConfigInterface::QUESTIONNAIRE_INTRO_TEXT,
                         'required' => false,
                         'label' => __('Questionnaire intro'),
-                        'value' => $this->product->getData(Config::QUESTIONAIRE_INTRO_TEXT)
+                        'value' => $this->product->getData(ConfigInterface::QUESTIONNAIRE_INTRO_TEXT)
                     ]
                 ]
             ]
@@ -164,23 +186,47 @@ class Pmeds extends AbstractModifier
     }
 
     /**
-     * This uiComponent is responsible for Pmeds Tab visibility (based on currently selected attribute set)
+     * Build multi-select uiComponent for product questions
      *
      * @return array
      */
-    protected function getVisibilityController()
+    protected function buildSelectedOptions()
     {
         return [
             'arguments' => [
                 'data' => [
                     'config' => [
-                        'formElement'   => Hidden::NAME,
+                        'label' => __('Select questions'),
                         'componentType' => Field::NAME,
-                        'component'     => 'Tingle_Pmeds/js/component/disable-on-attribute/tab',
-                        'value'         => $this->config->getPmedsAttributeSetId()
+                        'formElement' => MultiSelect::NAME,
+                        'dataScope' => ConfigInterface::SELECTED_QUESTIONS_LIST,
+                        'dataType' => Text::NAME,
+                        'sortOrder' => 20,
+                        'required' => false,
+                        'options' => $this->options->toOptionArray(),
+                        'visible' => true,
+                        'disabled' => false,
+                        'value' => $this->getSelectedQuestionsList()
                     ],
-                ]
-            ]
+                ],
+            ],
         ];
+    }
+
+    private function getSelectedQuestionsList()
+    {
+        $list = '';
+
+        $productQuestions = $this->productQuestionsRepository->getAllProductQuestionsMetaData($this->product);
+
+        /** @var \Tingle\Pmeds\Api\Data\ProductQuestionsInterface $productQuestion */
+        foreach ($productQuestions as $productQuestion) {
+            if (!empty($list)) {
+                $list .= ',';
+            }
+            $list .= $productQuestion->getSelectedQuestionId();
+        }
+
+        return $list;
     }
 }

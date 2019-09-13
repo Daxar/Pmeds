@@ -8,6 +8,9 @@ interface ConfigInterface
      */
     const XML_PATH_BASE = 'pmeds/general/';
 
+    const QUESTIONNAIRE_INTRO_TEXT = 'questions_intro_text';
+    const SELECTED_QUESTIONS_LIST = 'selected_questions_list';
+
     const XML_PATH_ENABLE                      = self::XML_PATH_BASE . 'enable';
     const XML_PATH_INFO_TITLE                  = self::XML_PATH_BASE . 'info_display_title';
     const XML_PATH_INFO_HELP_TEXT              = self::XML_PATH_BASE . 'info_display_help_text';

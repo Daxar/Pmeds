@@ -3,6 +3,7 @@ namespace Tingle\Pmeds\Model;
 
 use Magento\Framework\Api\SearchCriteriaInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Api\SearchResultsFactory;
 use Tingle\Pmeds\Api\QuestionsRepositoryInterface;
 use Tingle\Pmeds\Model\QuestionsFactory as ModelFactory;
 use Tingle\Pmeds\Model\ResourceModel\Questions as ResourceModel;
@@ -26,6 +27,9 @@ class QuestionsRepository implements QuestionsRepositoryInterface
      */
     private $collectionFactory;
 
+    /**
+     * @var SearchResultsFactory
+     */
     private $searchResultsFactory;
 
     /**
@@ -38,7 +42,7 @@ class QuestionsRepository implements QuestionsRepositoryInterface
         ModelFactory $modelFactory,
         ResourceModel $resource,
         CollectionFactory $collectionFactory,
-        \Magento\Framework\Api\SearchResultsFactory $searchResultsFactory
+        SearchResultsFactory $searchResultsFactory
     ) {
         $this->modelFactory = $modelFactory;
         $this->resource = $resource;

@@ -1,6 +1,6 @@
 define([
     'uiComponent',
-    'uiRegistry'
+    'uiRegistry',
 ], function (
     component,
     registry
@@ -18,8 +18,7 @@ define([
         },
 
         attributeSetWasSelected: function (value) {
-            // this.value - Comes from Tingle\Pmeds\Ui\DataProvider\Product\Form\Modifier\Pmeds::getVisibilityController()->value
-            this.setTabVisibility(value == this.value);
+            this.setTabVisibility(value == this.targetAttributeSetId);
         },
 
         setTabVisibility: function (boolean) {

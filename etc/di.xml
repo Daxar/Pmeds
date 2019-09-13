@@ -2,6 +2,8 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Tingle\Pmeds\Api\Data\QuestionsInterface" type="Tingle\Pmeds\Model\Questions" />
     <preference for="Tingle\Pmeds\Api\QuestionsRepositoryInterface" type="Tingle\Pmeds\Model\QuestionsRepository" />
+    <preference for="Tingle\Pmeds\Api\Data\ProductQuestionsInterface" type="Tingle\Pmeds\Model\ProductQuestions" />
+    <preference for="Tingle\Pmeds\Api\ProductQuestionsRepositoryInterface" type="Tingle\Pmeds\Model\ProductQuestionsRepository" />
     <preference for="Tingle\Pmeds\Api\Data\ConfigInterface" type="Tingle\Pmeds\Model\Config" />
     <type name="Magento\Checkout\Block\Cart\Sidebar">
         <plugin name="passingTingleExtensionConfiguration" type="Tingle\Pmeds\Plugin\Block\Cart\Sidebar"/>

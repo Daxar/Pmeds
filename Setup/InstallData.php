@@ -1,26 +1,22 @@
 <?php declare(strict_types=1);
 namespace Tingle\Pmeds\Setup;
 
+use Magento\Framework\Setup\ModuleContextInterface;
+use Magento\Framework\Setup\ModuleDataSetupInterface;
+use Magento\Framework\Setup\InstallDataInterface;
 use Magento\Catalog\Api\Data\ProductAttributeInterface;
+use Magento\Catalog\Model\Product;
 use Magento\Eav\Api\AttributeSetManagementInterface;
 use Magento\Eav\Api\Data\AttributeSetInterfaceFactory;
 use Magento\Eav\Model\Config;
 use Magento\Eav\Setup\EavSetup;
-use Magento\Framework\Setup\ModuleContextInterface;
-use Magento\Framework\Setup\ModuleDataSetupInterface;
-use Magento\Framework\Setup\InstallDataInterface;
-use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
 use Magento\Eav\Setup\EavSetupFactory;
-use Magento\Catalog\Model\Product;
+use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
 use Tingle\Pmeds\Api\Data\ConfigInterface;
 
 class InstallData implements InstallDataInterface
 {
     const ATTRIBUTE_SET_NAME = 'P-Meds';
-
-    const QUESTIONAIRE_INTRO_TEXT = 'questions_intro_text';
-
-    const SELECTED_QUESTIONS_LIST = 'selected_questions_list';
 
     /**
      * @var Config
@@ -47,6 +43,9 @@ class InstallData implements InstallDataInterface
      */
     private $config;
 
+    /**
+     * @var EavSetupFactory
+     */
     private $eavSetupFactory;
 
     /**
@@ -80,9 +79,7 @@ class InstallData implements InstallDataInterface
      *
      * @param ModuleDataSetupInterface $setup
      * @param ModuleContextInterface $context
-     * @throws \Magento\Framework\Exception\InputException
-     * @throws \Magento\Framework\Exception\LocalizedException
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * @throws \Exception
      */
     public function install(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
     {
@@ -101,59 +98,32 @@ class InstallData implements InstallDataInterface
             );
         }
 
-        $this->addProductAttributes($setup);
+        $this->addQuestionnaireIntroAttribute($setup);
 
         $setup->endSetup();
     }
 
     /**
-     * @param \Magento\Framework\Setup\ModuleDataSetupInterface $setup
+     * @param ModuleDataSetupInterface $setup
+     * @return void
+     * @throws \Exception
      */
-    private function addProductAttributes($setup)
-    {
-        $this->addQuestionnaireIntroAttribute($setup);
-//        $this->addSelectedQuestionsAttribute($setup);
-    }
-
     private function addQuestionnaireIntroAttribute($setup)
     {
         $eavSetup = $this->eavSetupFactory->create(['setup' => $setup]);
-
         $eavSetup->addAttribute(
             Product::ENTITY,
-            self::QUESTIONAIRE_INTRO_TEXT,
+            ConfigInterface::QUESTIONNAIRE_INTRO_TEXT,
             [
                 'type' => 'varchar',
                 'label' => 'Questionnaire intro text',
                 'input' => 'string',
                 'required' => false,
-                'global' => ScopedAttributeInterface::SCOPE_WEBSITE,
+                'global' => ScopedAttributeInterface::SCOPE_STORE,
                 'visible' => false,
                 'user_defined' => false,
                 'unique' => false,
-                'group' => 'General'
-            ]
-        );
-    }
-
-    private function addSelectedQuestionsAttribute($setup)
-    {
-        $eavSetup = $this->eavSetupFactory->create(['setup' => $setup]);
-
-        $eavSetup->addAttribute(
-            Product::ENTITY,
-            self::SELECTED_QUESTIONS_LIST,
-            [
-                'type' => 'varchar',
-                'label' => 'Selected questions list',
-                'input' => 'string',
-//                'backend' => Backend::class,
-                'required' => false,
-                'global' => ScopedAttributeInterface::SCOPE_WEBSITE,
-                'visible' => true,
-                'user_defined' => false,
-                'unique' => false,
-                'group' => 'General'
+                'group' => 'Content'
             ]
         );
     }

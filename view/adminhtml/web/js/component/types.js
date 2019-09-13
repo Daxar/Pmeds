@@ -11,7 +11,7 @@ define([
         defaults: {
             isOptionsLocked: ko.observable(true),
             isAnswerLocked: ko.observable(true),
-            selectTypeId: 2, // This is a hardcoded part. Id matches key at Tingle\Pmeds\Ui\Options\Questions\Types::$typesList
+            selectTypeId: 2, // This is a hardcoded part. Id matches key at Tingle\Pmeds\Model\Types::$typesList
             listens: {
                 'value': 'typeWasSelected'
             },

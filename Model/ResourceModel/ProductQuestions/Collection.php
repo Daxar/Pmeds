@@ -1,15 +1,15 @@
 <?php declare(strict_types=1);
-namespace Tingle\Pmeds\Model\ResourceModel\Questions;
+namespace Tingle\Pmeds\Model\ResourceModel\ProductQuestions;
 
 use Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection;
 use Tingle\Pmeds\Model;
-use Tingle\Pmeds\Api\Data\QuestionsInterface as Config;
+use Tingle\Pmeds\Api\Data\ProductQuestionsInterface as Config;
 
 class Collection extends AbstractCollection
 {
     protected $_idFieldName = Config::FIELD_ID;
 
-    protected $_eventPrefix = 'collection_questions_tingle_pmeds';
+    protected $_eventPrefix = 'collection_product_questions_tingle_pmeds';
 
     /**
      * @inheritdoc
@@ -17,8 +17,8 @@ class Collection extends AbstractCollection
     protected function _construct()
     {
         $this->_init(
-            Model\Questions::class,
-            Model\ResourceModel\Questions::class
+            Model\ProductQuestions::class,
+            Model\ResourceModel\ProductQuestions::class
         );
     }
 }
