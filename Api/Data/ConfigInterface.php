@@ -35,4 +35,11 @@ interface ConfigInterface
      * @return integer|false
      */
     public function getPmedsAttributeSetId();
+
+    /**
+     * Get question type class
+     *
+     * @return array
+     */
+    public function getQuestionTypes();
 }

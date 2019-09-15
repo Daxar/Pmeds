@@ -9,7 +9,7 @@ class Questions extends AbstractModel implements QuestionsInterface
 {
     protected $_eventPrefix = 'tingle_question';
 
-    protected $_cacheTag = 'tingle_questions';
+    protected $_cacheTag = 'tingle_question';
 
     /**
      * @inheritdoc

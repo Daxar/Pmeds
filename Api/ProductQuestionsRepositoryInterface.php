@@ -44,7 +44,7 @@ interface ProductQuestionsRepositoryInterface
      * Get collection of product questions metadata
      * Returns collection of \Tingle\Pmeds\Api\Data\ProductQuestionsInterface models
      *
-     * @param \Magento\Catalog\Model\Product $product
+     * @param \Magento\Catalog\Api\Data\ProductInterface $product
      * @return \Magento\Framework\Api\AbstractExtensibleObject[]
      */
     public function getAllProductQuestionsMetaData($product);
@@ -53,8 +53,8 @@ interface ProductQuestionsRepositoryInterface
      * Get collection of question models for provided product
      * Return collection of \Tingle\Pmeds\Api\Data\QuestionsInterface models
      *
-     * @param \Magento\Catalog\Model\Product $product
-     * @return \Magento\Framework\Api\AbstractExtensibleObject[]
+     * @param \Magento\Catalog\Api\Data\ProductInterface $product
+     * @return \Tingle\Pmeds\Model\ResourceModel\Questions\Collection
      */
     public function getAllProductQuestions($product);
 }

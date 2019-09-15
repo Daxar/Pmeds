@@ -6,14 +6,12 @@ use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Api\SearchResultsFactory;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\FilterBuilder;
+use Magento\Framework\Data\Collection;
 use Tingle\Pmeds\Api\ProductQuestionsRepositoryInterface;
+use Tingle\Pmeds\Api\Data\ProductQuestionsInterface as Config;
+use Tingle\Pmeds\Api\Data\QuestionsInterface as QuestionConfig;
 use Tingle\Pmeds\Model\QuestionsFactory as ModelFactory;
 use Tingle\Pmeds\Model\ResourceModel\ProductQuestions as ResourceModel;
-use Tingle\Pmeds\Model\ResourceModel\ProductQuestions\CollectionFactory;
-use Tingle\Pmeds\Api\Data\ProductQuestionsInterface as Config;
-use Tingle\Pmeds\Api\Data\QuestionsInterface;
-use Tingle\Pmeds\Api\QuestionsRepositoryInterface;
-
 
 class ProductQuestionsRepository implements ProductQuestionsRepositoryInterface
 {
@@ -28,9 +26,9 @@ class ProductQuestionsRepository implements ProductQuestionsRepositoryInterface
     private $resource;
 
     /**
-     * @var CollectionFactory
+     * @var \Tingle\Pmeds\Model\ResourceModel\ProductQuestions\CollectionFactory
      */
-    private $collectionFactory;
+    private $productQuestionsCollectionFactory;
 
     /**
      * @var SearchResultsFactory
@@ -47,35 +45,38 @@ class ProductQuestionsRepository implements ProductQuestionsRepositoryInterface
      */
     private $filterBuilder;
 
-    private $questionsRepository;
+    /**
+     * @var \Tingle\Pmeds\Model\ResourceModel\Questions\CollectionFactory
+     */
+    private $questionsCollectionFactory;
 
     /**
-     * QuestionsRepository constructor.
+     * ProductQuestionsRepository constructor.
      *
      * @param QuestionsFactory $modelFactory
      * @param ResourceModel $resource
-     * @param CollectionFactory $collectionFactory
+     * @param \Tingle\Pmeds\Model\ResourceModel\ProductQuestions\CollectionFactory $productQuestionsCollectionFactory
      * @param SearchResultsFactory $searchResultsFactory
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param FilterBuilder $filterBuilder
-     * @param QuestionsRepositoryInterface $questionsRepository
+     * @param \Tingle\Pmeds\Model\ResourceModel\Questions\CollectionFactory $questionsCollectionFactory
      */
     public function __construct(
         ModelFactory $modelFactory,
         ResourceModel $resource,
-        CollectionFactory $collectionFactory,
+        \Tingle\Pmeds\Model\ResourceModel\ProductQuestions\CollectionFactory $productQuestionsCollectionFactory,
         SearchResultsFactory $searchResultsFactory,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         FilterBuilder $filterBuilder,
-        QuestionsRepositoryInterface $questionsRepository
+        \Tingle\Pmeds\Model\ResourceModel\Questions\CollectionFactory $questionsCollectionFactory
     ) {
         $this->modelFactory = $modelFactory;
         $this->resource = $resource;
-        $this->collectionFactory = $collectionFactory;
+        $this->productQuestionsCollectionFactory = $productQuestionsCollectionFactory;
         $this->searchResultsFactory = $searchResultsFactory;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->filterBuilder = $filterBuilder;
-        $this->questionsRepository = $questionsRepository;
+        $this->questionsCollectionFactory = $questionsCollectionFactory;
     }
 
     /**
@@ -124,7 +125,7 @@ class ProductQuestionsRepository implements ProductQuestionsRepositoryInterface
     public function getList(SearchCriteriaInterface $searchCriteria)
     {
         /** @var \Tingle\Pmeds\Model\ResourceModel\ProductQuestions\Collection $collection */
-        $collection = $this->collectionFactory->create();
+        $collection = $this->productQuestionsCollectionFactory->create();
 
         /** @var \Magento\Framework\Api\SearchResults $searchResult */
         $searchResult = $this->searchResultsFactory->create();
@@ -139,9 +140,10 @@ class ProductQuestionsRepository implements ProductQuestionsRepositoryInterface
      */
     public function getAllProductQuestionsMetaData($product)
     {
-        $productIdFilter = $this->filterBuilder->setField(Config::FIELD_PRODUCT_ID)->setValue($product->getId())->create();
-        $storeIdFilter = $this->filterBuilder->setField(Config::FIELD_STORE_ID)->setValue($product->getStoreId())->create();
-        $searchCriteria = $this->searchCriteriaBuilder->addFilters([$productIdFilter,$storeIdFilter])->create();
+        $productIdFilter = $this->filterBuilder->setField(Config::FIELD_PRODUCT_ID)->setValue($product->getId())->setConditionType('eq')->create();
+        $storeIdFilter = $this->filterBuilder->setField(Config::FIELD_STORE_ID)->setValue($product->getStoreId())->setConditionType('eq')->create();
+        $searchCriteriaBuilder = $this->searchCriteriaBuilder;
+        $searchCriteria = $searchCriteriaBuilder->addFilters([$productIdFilter, $storeIdFilter])->create();
 
         return $this->getList($searchCriteria);
     }
@@ -153,17 +155,19 @@ class ProductQuestionsRepository implements ProductQuestionsRepositoryInterface
     {
         $productQuestionsMetaData = $this->getAllProductQuestionsMetaData($product);
 
-        $filters = [];
+        /** @var \Tingle\Pmeds\Model\ResourceModel\Questions\Collection $collection */
+        $collection = $this->questionsCollectionFactory->create();
 
-        /** @var \Tingle\Pmeds\Api\Data\ProductQuestionsInterface $metadata */
-        foreach ($productQuestionsMetaData as $metadata) {
-            $filters[] = $this->filterBuilder->setField(QuestionsInterface::FIELD_ID)
-                ->setValue($metadata->getSelectedQuestionId())
-                ->create();
+
+        $ids = [];
+        /** @var \Tingle\Pmeds\Api\Data\ProductQuestionsInterface $productQuestion */
+        foreach ($productQuestionsMetaData as $productQuestion) {
+            $ids[] = $productQuestion->getSelectedQuestionId();
         }
 
-        $searchCriteria = $this->searchCriteriaBuilder->addFilters($filters)->create();
+        $collection->addFieldToFilter(QuestionConfig::FIELD_ID, ['in' => $ids]);
+        $collection->setOrder(QuestionConfig::FIELD_SORT_ORDER, Collection::SORT_ORDER_ASC);
 
-        return $this->questionsRepository->getList($searchCriteria);
+        return $collection;
     }
 }

@@ -31,7 +31,7 @@ define([
             submitForm: function (form) {
                 console.log('stuff!');
                 console.log(form);
-                self = this;
+                var self = this;
                 self.disableAddToCartButton(form);
                 if (enabledAtCategoryPage) {
                     self.checkForQuestions(form);
@@ -43,9 +43,9 @@ define([
             },
 
             checkForQuestions: function (form) {
-                self = this;
-                const sku = '24-MB01'; // TODO: Add sku properly
-                // const sku = $(form).attr('data-product-sku'); // TODO: Add sku properly
+                var self = this;
+                // const sku = '24-MB01'; // TODO: Add sku properly
+                const sku = $(form).attr('data-product-sku'); // TODO: Add sku properly
                 $.ajax({
                     url: urlBuilder.build('pmeds/questions/form/sku/' + sku),
                     type: 'GET',

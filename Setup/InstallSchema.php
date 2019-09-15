@@ -72,13 +72,13 @@ class InstallSchema implements InstallSchemaInterface
             QuestionsConfig::FIELD_OPTIONS,
             Table::TYPE_TEXT,
             '64k',
-            [],
+            ['nullable' => true],
             'Serialized options'
         )->addColumn(
             QuestionsConfig::FIELD_ANSWER,
             Table::TYPE_TEXT,
             '64k',
-            [],
+            ['nullable' => true],
             'Answer'
         )->setComment(
             'Tingle Pmeds questions'
@@ -86,8 +86,6 @@ class InstallSchema implements InstallSchemaInterface
         $installer->getConnection()
             ->createTable($table);
     }
-
-
 
     /**
      * @param \Magento\Framework\Setup\SchemaSetupInterface $installer

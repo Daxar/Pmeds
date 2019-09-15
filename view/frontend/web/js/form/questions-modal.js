@@ -1,22 +1,22 @@
 define([
     'jquery',
+    'underscore',
     'uiComponent',
     'mage/translate',
+    'uiRegistry',
+    'validation',
     'jquery/ui',
     'domReady!'
 ], function (
     $,
+    _,
     component,
-    $t
+    $t,
+    registry
 ) {
     'use strict';
 
     return component.extend({
-
-        defaults: {
-            formSelector: '#' + formId
-        },
-
         initialize: function () {
             this._super();
 
@@ -26,17 +26,19 @@ define([
         },
 
         buildModal: function () {
-            $(this.formSelector).modal(
-                this.getModalOptions(this.formSelector)
+            const target = '#' + this.formSelector;
+            $(target).modal(
+                this.getModalOptions(target)
             );
         },
 
-        getModalOptions: function (formSelector) {
+        getModalOptions: function (target) {
+            var self = this;
             return {
                 title: 'My Title',
                 autoOpen: true,
                 closed: function () {
-                    $(formSelector).remove();
+                    $(target).remove();
                 },
                 buttons: [
                     {
@@ -46,20 +48,36 @@ define([
                         },
                         'class': 'action-primary',
                         click: function () {
-                            console.log('primary button ticked!');
-                            // TODO: Ajax to controller, if passed, save stored results in localStorage. Then remove form
-                            this.closeModal();
+                            if ($(target).validation('isValid') && self.checkAnswers()) {
+                                console.log('Success. You passed the test.');
+                                //this.closeModal();
+                                //$(target).remove();
+                            } else {
+                                console.log('Answers failed');
+                            }
                         }
                     }, {
                         text: $t('Cancel'),
 
                         click: function () {
                             this.closeModal();
-                            $(formSelector).remove();
+                            $(target).remove();
                         }
                     }
                 ]
             };
+        },
+
+        checkAnswers: function () {
+            var answers = registry.get('localStorage').get('pmeds-has-answers');
+
+            if (answers == null) {
+                return true;
+            }
+
+            _.each(answers, function (data) {
+                console.log(data);
+            });
         }
     });
 });

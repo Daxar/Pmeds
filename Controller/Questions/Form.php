@@ -7,27 +7,40 @@ use Magento\Framework\View\LayoutInterface;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Eav\Api\AttributeSetRepositoryInterface;
+use Tingle\Pmeds\Api\ProductQuestionsRepositoryInterface;
 use Tingle\Pmeds\Block\Form\Form as QuestionsForm;
 use Tingle\Pmeds\Setup\InstallData;
 
-// TODO: Beautify this class
 class Form extends Action
 {
+    /**
+     * @var LayoutInterface
+     */
     private $layout;
 
+    /**
+     * @var ProductRepositoryInterface
+     */
     private $productRepository;
 
+    private $productQuestionsRepository;
+
+    /**
+     * @var AttributeSetRepositoryInterface
+     */
     private $attributeSetRepository;
 
     public function __construct(
         Context $context,
         LayoutInterface $layout,
         ProductRepositoryInterface $productRepository,
+        ProductQuestionsRepositoryInterface $productQuestionsRepository,
         AttributeSetRepositoryInterface $attributeSetRepository
     ) {
         parent::__construct($context);
         $this->layout = $layout;
         $this->productRepository = $productRepository;
+        $this->productQuestionsRepository = $productQuestionsRepository;
         $this->attributeSetRepository = $attributeSetRepository;
     }
 
@@ -65,14 +78,19 @@ class Form extends Action
      *
      * @param \Magento\Catalog\Api\Data\ProductInterface $product
      * @return boolean
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
     private function canBuildForm($product)
     {
-        $attributeName = $this->attributeSetRepository->get($product->getAttributeSetId())->getAttributeSetName();
+        try {
+            $attributeSetName = $this->attributeSetRepository->get($product->getAttributeSetId())->getAttributeSetName();
 
-        if ($attributeName === InstallData::ATTRIBUTE_SET_NAME) {
-            return true;
+            $isPmedsAttributeSet = $attributeSetName === InstallData::ATTRIBUTE_SET_NAME;
+            $hasQuestions = $this->productQuestionsRepository->getAllProductQuestionsMetaData($product);
+
+            if ($isPmedsAttributeSet && $hasQuestions) {
+                return true;
+            }
+        } catch (\Exception $e) {
         }
 
         return false;
@@ -91,7 +109,7 @@ class Form extends Action
             'tingle.questions.form',
             [
                 'data' => [
-                    'product' => $product
+                    \Tingle\Pmeds\Block\Form\Form::PRODUCT_DATA_KEY => $product
                 ]
             ]
         )->toHtml();

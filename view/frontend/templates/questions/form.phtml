@@ -1,13 +1,19 @@
-<?php /** @var \Tingle\Pmeds\Block\ $block */ ?>
-<form id="<?= /* @escapeNotVerified */ $block->getFormId() ?>" style="display:none;" action="<?php echo $block->getFormAction() ?>" method="post">
-    <?= $block->getBlockHtml('formkey')?>
-    <?= $block->getFormFields($block->getProduct()) ?>
+<?php /** @var \Tingle\Pmeds\Block\Form\Form $block */ ?>
+<form id="<?= /* @escapeNotVerified */ $block->getFormId() ?>" style="display:none;" method="post">
+    <?= /* @escapeNotVerified */ $block->getBlockHtml('formkey')?>
+    <div class="questionnaire-intro">
+        <span><?= $block->escapeHtml($block->getProductQuestionnaireTitle()) ?></span>
+    </div>
+    <fieldset class="fieldset">
+        <?= /* @escapeNotVerified */ $block->getFormFields() ?>
+    </fieldset>
 </form>
 <script type="text/x-magento-init">
     {
-        "*": {
+        "#<?= $block->getFormId() ?>": {
+            "validation": {},
             "Tingle_Pmeds/js/form/questions-modal": {
-                "formId": "<?= /* @escapeNotVerified */ $block->getFormId() ?>"
+                "formSelector": "<?= /* @escapeNotVerified */ $block->getFormId() ?>"
             }
         }
     }

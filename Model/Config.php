@@ -3,6 +3,7 @@ namespace Tingle\Pmeds\Model;
 
 use Magento\Eav\Api\AttributeSetRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
+use Tingle\Pmeds\Block\Form\Fields;
 use Tingle\Pmeds\Api\Data\ConfigInterface;
 use Tingle\Pmeds\Setup\InstallData;
 
@@ -19,9 +20,15 @@ class Config implements ConfigInterface
     private $searchCriteriaBuilder;
 
     private $typesList = [
-        0 => 'text',
-        1 => 'textarea',
-        2 => 'select'
+        0 => Fields\Text::TYPE,
+        1 => Fields\TextArea::TYPE,
+        2 => Fields\Select::TYPE
+    ];
+
+    private $typesClasses = [
+        0 => Fields\Text::class,
+        1 => Fields\TextArea::class,
+        2 => Fields\Select::class
     ];
 
     public function __construct(
@@ -56,5 +63,13 @@ class Config implements ConfigInterface
         }
 
         return false;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getQuestionTypes()
+    {
+        return $this->typesClasses;
     }
 }

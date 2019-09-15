@@ -31,11 +31,6 @@ interface QuestionsInterface
     const DATA_PERSISTOR_OPTIONS_KEY = self::DATA_PERSISTOR_KEY . '_' . self::FIELD_OPTIONS;
 
     /**
-     * Config XML path //TODO: Future config path extractors here.
-     */
-    const XML_PATH_SOMETHING = 'something';
-
-    /**
      * Get question id
      *
      * @return integer

@@ -7,7 +7,7 @@ use Tingle\Pmeds\Model\ResourceModel\ProductQuestions as Resource;
 
 class ProductQuestions extends AbstractModel implements ProductQuestionsInterface
 {
-    protected $_eventPrefix = 'tingle_product_question';
+    protected $_eventPrefix = 'tingle_product_questions';
 
     protected $_cacheTag = 'tingle_product_questions';
 

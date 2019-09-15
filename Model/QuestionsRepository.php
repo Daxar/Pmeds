@@ -37,6 +37,7 @@ class QuestionsRepository implements QuestionsRepositoryInterface
      * @param QuestionsFactory $modelFactory
      * @param ResourceModel $resource
      * @param CollectionFactory $collectionFactory
+     * @param SearchResultsFactory $searchResultsFactory
      */
     public function __construct(
         ModelFactory $modelFactory,
