@@ -15,9 +15,10 @@ define([
                 var questionsPassedData = registry.get('localStorage').get('products-questionnaire-passed');
 
                 if (questionsPassedData !== undefined) {
-                    payload['pmeds-questions-data'] = questionsPassedData;
-                    registry.get('localStorage').remove('products-questionnaire-passed');
+                    questionsPassedData = $.extend({}, questionsPassedData, {'masked_cart_id': payload.cartId})
                 }
+
+                registry.get('localStorage').set('products-questionnaire-passed', questionsPassedData);
             } catch (e) {
                 console.log(e);
             }

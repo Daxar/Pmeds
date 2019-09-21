@@ -3,7 +3,7 @@ namespace Tingle\Pmeds\Api;
 
 interface QuestionnaireFormDataRepositoryInterface
 {
-    public function getById($id);
+    public function getByOrderId($orderId);
 
     public function save($model);
 

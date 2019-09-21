@@ -61,14 +61,14 @@ interface QuestionsInterface
     /**
      * Get question options
      *
-     * @return array|string
+     * @return array|null
      */
     public function getOptions();
 
     /**
      * Get correct answer to the question
      *
-     * @return string
+     * @return string|null
      */
     public function getAnswer();
 

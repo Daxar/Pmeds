@@ -19,11 +19,6 @@ class QuestionnaireFormData extends AbstractModel implements QuestionnaireFormDa
         $this->_init(Resource::class);
     }
 
-    public function setQuoteId($id)
-    {
-        return $this->setData(self::FIELD_QUOTE_ID, $id);
-    }
-
     public function setOrderId($id)
     {
         return $this->setData(self::FIELD_ORDER_ID, $id);
@@ -31,7 +26,7 @@ class QuestionnaireFormData extends AbstractModel implements QuestionnaireFormDa
 
     public function setQuestionnaireFormData($data)
     {
-        return $this->setData(self::FIELD_QUESTIONNAIRE_FORM_DATA, $data);
+        return $this->setData(self::FIELD_QUESTIONNAIRE_FORM_DATA, serialize($data));
     }
 
     public function getOrderId()
@@ -41,12 +36,7 @@ class QuestionnaireFormData extends AbstractModel implements QuestionnaireFormDa
 
     public function getQuestionnaireFormData()
     {
-        return $this->getData(self::FIELD_QUESTIONNAIRE_FORM_DATA);
-    }
-
-    public function getQuoteId()
-    {
-        return $this->getData(self::FIELD_QUOTE_ID);
+        return unserialize($this->getData(self::FIELD_QUESTIONNAIRE_FORM_DATA));
     }
 
     public function getId()

@@ -22,13 +22,13 @@ class QuestionnaireFormDataRepository implements QuestionnaireFormDataRepository
     /**
      * @inheritDoc
      */
-    public function getById($id)
+    public function getByOrderId($orderId)
     {
         /** @var \Tingle\Pmeds\Model\QuestionnaireFormData $model */
         $model = $this->modelFactory->create();
-        $this->resource->load($model, $id, Config::FIELD_ID);
+        $this->resource->load($model, $orderId, Config::FIELD_ORDER_ID);
         if (!$model->getId()) {
-            throw new NoSuchEntityException(__('Form data with "%1" ID doesn\'t exist.', $id));
+            throw new NoSuchEntityException(__('Form data with "%1" ID doesn\'t exist.', $orderId));
         }
         return $model;
     }

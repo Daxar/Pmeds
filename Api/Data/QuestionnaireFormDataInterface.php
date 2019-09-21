@@ -9,8 +9,6 @@ interface QuestionnaireFormDataInterface
 
     const FIELD_ORDER_ID = 'order_id';
 
-    const FIELD_QUOTE_ID = 'quote_id';
-
     const FIELD_QUESTIONNAIRE_FORM_DATA = 'form_data';
 
     /**
@@ -21,23 +19,12 @@ interface QuestionnaireFormDataInterface
     /**
      * @return integer
      */
-    public function getQuoteId();
-
-    /**
-     * @return integer
-     */
     public function getOrderId();
 
     /**
-     * @return string
+     * @return \Tingle\Pmeds\Model\Internal\OrderFormData
      */
     public function getQuestionnaireFormData();
-
-    /**
-     * @param integer $id
-     * @return $this
-     */
-    public function setQuoteId($id);
 
     /**
      * @param integer $id

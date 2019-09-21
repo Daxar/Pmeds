@@ -42,4 +42,10 @@ interface ConfigInterface
      * @return array
      */
     public function getQuestionTypes();
+
+    /**
+     * @param integer $integer
+     * @return string
+     */
+    public function getType($integer);
 }

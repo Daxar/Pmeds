@@ -7,6 +7,7 @@ use Magento\Framework\Setup\SchemaSetupInterface;
 use Magento\Framework\DB\Ddl\Table;
 use Tingle\Pmeds\Api\Data\QuestionsInterface as QuestionsConfig;
 use Tingle\Pmeds\Api\Data\ProductQuestionsInterface as ProductQuestionsConfig;
+use Tingle\Pmeds\Api\Data\QuestionnaireFormDataInterface as FormDataConfig;
 
 class InstallSchema implements InstallSchemaInterface
 {
@@ -22,6 +23,7 @@ class InstallSchema implements InstallSchemaInterface
 
         $this->createQuestionsTable($installer);
         $this->createProductQuestionsTable($installer);
+        $this->createQuestionnaireFormDataTable($installer);
 
         $installer->endSetup();
     }
@@ -125,6 +127,39 @@ class InstallSchema implements InstallSchemaInterface
             'Selected question ID'
         )->setComment(
             'Tingle Pmeds product questions'
+        );
+        $installer->getConnection()
+            ->createTable($table);
+    }
+
+    private function createQuestionnaireFormDataTable($installer)
+    {
+        if ($installer->getConnection()->isTableExists($installer->getTable(FormDataConfig::TABLE_NAME))) {
+            $installer->getConnection()->dropTable($installer->getTable(FormDataConfig::TABLE_NAME));
+        }
+
+        $table = $installer->getConnection()->newTable(
+            $installer->getTable(FormDataConfig::TABLE_NAME)
+        )->addColumn(
+            FormDataConfig::FIELD_ID,
+            Table::TYPE_INTEGER,
+            null,
+            ['identity' => true, 'unsigned' => true, 'nullable' => false, 'primary' => true],
+            'ID'
+        )->addColumn(
+            FormDataConfig::FIELD_ORDER_ID,
+            Table::TYPE_INTEGER,
+            null,
+            ['unsigned' => true, 'nullable' => false],
+            'Order ID'
+        )->addColumn(
+            FormDataConfig::FIELD_QUESTIONNAIRE_FORM_DATA,
+            Table::TYPE_TEXT,
+            '64k',
+            ['nullable' => false],
+            'Serialized form data'
+        )->setComment(
+            'Tingle Pmeds passed questionnaire form data'
         );
         $installer->getConnection()
             ->createTable($table);

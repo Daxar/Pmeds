@@ -72,4 +72,11 @@ class Config implements ConfigInterface
     {
         return $this->typesClasses;
     }
+
+    public function getType($integer)
+    {
+        $types = $this->getTypes();
+
+        return $types[$integer];
+    }
 }
