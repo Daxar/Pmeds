@@ -1,7 +1,9 @@
 <?php declare(strict_types=1);
 namespace Tingle\Pmeds\Model;
 
+use Magento\Framework\Api\Search\FilterGroupBuilder;
 use Magento\Framework\Api\SearchCriteriaInterface;
+use Magento\Framework\Api\SearchResults;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Api\SearchResultsFactory;
 use Magento\Framework\Api\SearchCriteriaBuilder;
@@ -12,6 +14,7 @@ use Tingle\Pmeds\Api\Data\ProductQuestionsInterface as Config;
 use Tingle\Pmeds\Api\Data\QuestionsInterface as QuestionConfig;
 use Tingle\Pmeds\Model\QuestionsFactory as ModelFactory;
 use Tingle\Pmeds\Model\ResourceModel\ProductQuestions as ResourceModel;
+use Magento\Framework\Api\SortOrder;
 
 class ProductQuestionsRepository implements ProductQuestionsRepositoryInterface
 {
@@ -46,6 +49,11 @@ class ProductQuestionsRepository implements ProductQuestionsRepositoryInterface
     private $filterBuilder;
 
     /**
+     * @var FilterGroupBuilder
+     */
+    private $filterGroupBuilder;
+
+    /**
      * @var \Tingle\Pmeds\Model\ResourceModel\Questions\CollectionFactory
      */
     private $questionsCollectionFactory;
@@ -59,6 +67,7 @@ class ProductQuestionsRepository implements ProductQuestionsRepositoryInterface
      * @param SearchResultsFactory $searchResultsFactory
      * @param SearchCriteriaBuilder $searchCriteriaBuilder
      * @param FilterBuilder $filterBuilder
+     * @param FilterGroupBuilder $filterGroupBuilder
      * @param \Tingle\Pmeds\Model\ResourceModel\Questions\CollectionFactory $questionsCollectionFactory
      */
     public function __construct(
@@ -68,6 +77,7 @@ class ProductQuestionsRepository implements ProductQuestionsRepositoryInterface
         SearchResultsFactory $searchResultsFactory,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         FilterBuilder $filterBuilder,
+        FilterGroupBuilder $filterGroupBuilder,
         \Tingle\Pmeds\Model\ResourceModel\Questions\CollectionFactory $questionsCollectionFactory
     ) {
         $this->modelFactory = $modelFactory;
@@ -76,6 +86,7 @@ class ProductQuestionsRepository implements ProductQuestionsRepositoryInterface
         $this->searchResultsFactory = $searchResultsFactory;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->filterBuilder = $filterBuilder;
+        $this->filterGroupBuilder = $filterGroupBuilder;
         $this->questionsCollectionFactory = $questionsCollectionFactory;
     }
 
@@ -124,15 +135,35 @@ class ProductQuestionsRepository implements ProductQuestionsRepositoryInterface
      */
     public function getList(SearchCriteriaInterface $searchCriteria)
     {
+        /** @var SearchResults $searchResults */
+        $searchResults = $this->searchResultsFactory->create();
+        $searchResults->setSearchCriteria($searchCriteria);
+
         /** @var \Tingle\Pmeds\Model\ResourceModel\ProductQuestions\Collection $collection */
         $collection = $this->productQuestionsCollectionFactory->create();
 
-        /** @var \Magento\Framework\Api\SearchResults $searchResult */
-        $searchResult = $this->searchResultsFactory->create();
-        $searchResult->setSearchCriteria($searchCriteria);
-        $searchResult->setItems($collection->getItems());
-        $searchResult->setTotalCount($collection->getSize());
-        return $searchResult->getItems();
+        foreach ($searchCriteria->getFilterGroups() as $filterGroup) {
+            foreach ($filterGroup->getFilters() as $filter) {
+                $condition = $filter->getConditionType() ?: 'eq';
+                $collection->addFieldToFilter($filter->getField(), [$condition => $filter->getValue()]);
+            }
+        }
+        $searchResults->setTotalCount($collection->getSize());
+        $sortOrdersData = $searchCriteria->getSortOrders();
+        if ($sortOrdersData) {
+            foreach ($sortOrdersData as $sortOrder) {
+                $collection->addOrder(
+                    $sortOrder->getField(),
+                    ($sortOrder->getDirection() == SortOrder::SORT_ASC) ? 'ASC' : 'DESC'
+                );
+            }
+        }
+        $collection->setCurPage($searchCriteria->getCurrentPage());
+
+        $collection->setPageSize($searchCriteria->getPageSize());
+
+        $searchResults->setItems($collection->getItems());
+        return $searchResults;
     }
 
     /**
@@ -141,9 +172,12 @@ class ProductQuestionsRepository implements ProductQuestionsRepositoryInterface
     public function getAllProductQuestionsMetaData($product)
     {
         $productIdFilter = $this->filterBuilder->setField(Config::FIELD_PRODUCT_ID)->setValue($product->getId())->setConditionType('eq')->create();
+        $productIdFilterGroup = $this->filterGroupBuilder->setFilters([$productIdFilter])->create();
+
         $storeIdFilter = $this->filterBuilder->setField(Config::FIELD_STORE_ID)->setValue($product->getStoreId())->setConditionType('eq')->create();
-        $searchCriteriaBuilder = $this->searchCriteriaBuilder;
-        $searchCriteria = $searchCriteriaBuilder->addFilters([$productIdFilter, $storeIdFilter])->create();
+        $storeIdFilterGroup = $this->filterGroupBuilder->setFilters([$storeIdFilter])->create();
+
+        $searchCriteria = $this->searchCriteriaBuilder->setFilterGroups([$productIdFilterGroup, $storeIdFilterGroup])->create();
 
         return $this->getList($searchCriteria);
     }
@@ -158,10 +192,9 @@ class ProductQuestionsRepository implements ProductQuestionsRepositoryInterface
         /** @var \Tingle\Pmeds\Model\ResourceModel\Questions\Collection $collection */
         $collection = $this->questionsCollectionFactory->create();
 
-
         $ids = [];
         /** @var \Tingle\Pmeds\Api\Data\ProductQuestionsInterface $productQuestion */
-        foreach ($productQuestionsMetaData as $productQuestion) {
+        foreach ($productQuestionsMetaData->getItems() as $productQuestion) {
             $ids[] = $productQuestion->getSelectedQuestionId();
         }
 

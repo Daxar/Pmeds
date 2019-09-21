@@ -6,6 +6,7 @@ use Magento\Framework\App\Action\Context;
 use Magento\Framework\View\LayoutInterface;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Catalog\Api\ProductRepositoryInterface;
+use Magento\Backend\Block\Widget\Grid\Column\Filter\Store;
 use Magento\Eav\Api\AttributeSetRepositoryInterface;
 use Tingle\Pmeds\Api\ProductQuestionsRepositoryInterface;
 use Tingle\Pmeds\Block\Form\Form as QuestionsForm;
@@ -23,6 +24,9 @@ class Form extends Action
      */
     private $productRepository;
 
+    /**
+     * @var ProductQuestionsRepositoryInterface
+     */
     private $productQuestionsRepository;
 
     /**
@@ -74,7 +78,6 @@ class Form extends Action
 
     /**
      * Check if current product belongs to the 'P-meds' attribute set and has questions selected
-     * //TODO:Add check if product has questions at all.
      *
      * @param \Magento\Catalog\Api\Data\ProductInterface $product
      * @return boolean
@@ -85,11 +88,13 @@ class Form extends Action
             $attributeSetName = $this->attributeSetRepository->get($product->getAttributeSetId())->getAttributeSetName();
 
             $isPmedsAttributeSet = $attributeSetName === InstallData::ATTRIBUTE_SET_NAME;
-            $hasQuestions = $this->productQuestionsRepository->getAllProductQuestionsMetaData($product);
+            $hasStoreQuestions = $this->productQuestionsRepository->getAllProductQuestionsMetaData($product)->getTotalCount();
+            $hasDefaultQuestions = $this->productQuestionsRepository->getAllProductQuestionsMetaData($product->setStoreId(Store::ALL_STORE_VIEWS))->getTotalCount();
 
-            if ($isPmedsAttributeSet && $hasQuestions) {
+            if ($isPmedsAttributeSet && ($hasStoreQuestions || $hasDefaultQuestions) ) {
                 return true;
             }
+
         } catch (\Exception $e) {
         }
 

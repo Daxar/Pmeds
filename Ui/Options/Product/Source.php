@@ -48,7 +48,7 @@ class Source implements OptionSourceInterface
     public function toOptionArray()
     {
         $searchCriteria = $this->searchCriteriaBuilder->create();
-        $questions = $this->questionsRepository->getList($searchCriteria);
+        $questions = $this->questionsRepository->getList($searchCriteria)->getItems();
 
         $options = [];
 

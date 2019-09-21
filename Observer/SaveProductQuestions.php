@@ -110,7 +110,7 @@ class SaveProductQuestions implements ObserverInterface
         $productQuestions = $this->productQuestionsRepository->getAllProductQuestionsMetaData($this->product);
 
         /** @var \Tingle\Pmeds\Api\Data\ProductQuestionsInterface $productQuestion */
-        foreach ($productQuestions as $productQuestion) {
+        foreach ($productQuestions->getItems() as $productQuestion) {
             $this->productQuestionsRepository->delete($productQuestion);
         }
     }

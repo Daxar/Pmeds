@@ -1,5 +1,5 @@
 <?php /** @var \Tingle\Pmeds\Block\Form\Form $block */ ?>
-<form id="<?= /* @escapeNotVerified */ $block->getFormId() ?>" style="display:none;" method="post">
+<form id="<?= /* @escapeNotVerified */ $block->getFormId() ?>" style="display:none;" method="post" data-mage-init='{"validation":{}}'>
     <?= /* @escapeNotVerified */ $block->getBlockHtml('formkey')?>
     <div class="questionnaire-intro">
         <span><?= $block->escapeHtml($block->getProductQuestionnaireTitle()) ?></span>
@@ -8,13 +8,3 @@
         <?= /* @escapeNotVerified */ $block->getFormFields() ?>
     </fieldset>
 </form>
-<script type="text/x-magento-init">
-    {
-        "#<?= $block->getFormId() ?>": {
-            "validation": {},
-            "Tingle_Pmeds/js/form/questions-modal": {
-                "formSelector": "<?= /* @escapeNotVerified */ $block->getFormId() ?>"
-            }
-        }
-    }
-</script>

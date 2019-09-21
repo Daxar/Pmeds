@@ -36,7 +36,7 @@ interface ProductQuestionsRepositoryInterface
      * Get list
      *
      * @param SearchCriteriaInterface $searchCriteria
-     * @return \Magento\Framework\Api\AbstractExtensibleObject[]
+     * @return \Magento\Framework\Api\SearchResultsInterface
      */
     public function getList(SearchCriteriaInterface $searchCriteria);
 
@@ -45,7 +45,7 @@ interface ProductQuestionsRepositoryInterface
      * Returns collection of \Tingle\Pmeds\Api\Data\ProductQuestionsInterface models
      *
      * @param \Magento\Catalog\Api\Data\ProductInterface $product
-     * @return \Magento\Framework\Api\AbstractExtensibleObject[]
+     * @return \Magento\Framework\Api\SearchResultsInterface
      */
     public function getAllProductQuestionsMetaData($product);
 

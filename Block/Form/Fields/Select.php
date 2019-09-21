@@ -22,12 +22,10 @@ class Select extends AbstractField
 
     public function getCorrectAnswer()
     {
-        $answer = $this->getQuestion()->getAnswer();
-
-        if ($answer !== null && $this->getIsRequired()) {
-            return $answer;
+        if ($this->getQuestion()->getAnswer() !== null && $this->getIsRequired()) {
+            return $this->getQuestion()->getAnswer();
         }
 
-        return false;
+        return null;
     }
 }

@@ -37,6 +37,11 @@ abstract class AbstractField extends Template
         return false;
     }
 
+    public function getFieldIdAttribute()
+    {
+        return 'pmeds-question-' . $this->getQuestionId();
+    }
+
     public function getIsRequiredAttribute()
     {
         if ($this->getIsRequired()) {

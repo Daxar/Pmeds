@@ -2,6 +2,8 @@
 namespace Tingle\Pmeds\Model;
 
 use Magento\Framework\Api\SearchCriteriaInterface;
+use Magento\Framework\Api\SearchResults;
+use Magento\Framework\Api\SortOrder;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Api\SearchResultsFactory;
 use Tingle\Pmeds\Api\QuestionsRepositoryInterface;
@@ -96,14 +98,34 @@ class QuestionsRepository implements QuestionsRepositoryInterface
      */
     public function getList(SearchCriteriaInterface $searchCriteria)
     {
+        /** @var SearchResults $searchResults */
+        $searchResults = $this->searchResultsFactory->create();
+        $searchResults->setSearchCriteria($searchCriteria);
+
         /** @var \Tingle\Pmeds\Model\ResourceModel\Questions\Collection $collection */
         $collection = $this->collectionFactory->create();
 
-        /** @var \Magento\Framework\Api\SearchResults $searchResult */
-        $searchResult = $this->searchResultsFactory->create();
-        $searchResult->setSearchCriteria($searchCriteria);
-        $searchResult->setItems($collection->getItems());
-        $searchResult->setTotalCount($collection->getSize());
-        return $searchResult->getItems();
+        foreach ($searchCriteria->getFilterGroups() as $filterGroup) {
+            foreach ($filterGroup->getFilters() as $filter) {
+                $condition = $filter->getConditionType() ?: 'eq';
+                $collection->addFieldToFilter($filter->getField(), [$condition => $filter->getValue()]);
+            }
+        }
+        $searchResults->setTotalCount($collection->getSize());
+        $sortOrdersData = $searchCriteria->getSortOrders();
+        if ($sortOrdersData) {
+            foreach ($sortOrdersData as $sortOrder) {
+                $collection->addOrder(
+                    $sortOrder->getField(),
+                    ($sortOrder->getDirection() == SortOrder::SORT_ASC) ? 'ASC' : 'DESC'
+                );
+            }
+        }
+        $collection->setCurPage($searchCriteria->getCurrentPage());
+
+        $collection->setPageSize($searchCriteria->getPageSize());
+
+        $searchResults->setItems($collection->getItems());
+        return $searchResults;
     }
 }

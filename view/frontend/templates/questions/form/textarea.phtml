@@ -1,8 +1,8 @@
 <?php /** @var \Tingle\Pmeds\Block\Form\Fields\TextArea $block */ ?>
 <div class="field name <?= $block->getIsRequiredAttribute() ?>">
-    <label class="label" for="pmeds-question-<?= $block->getQuestionId() ?>"><span><?= $block->getQuestionTitle() ?></span></label>
-
-    <textarea id="pmeds-question-<?= $block->getQuestionId() ?>" <?= $block->getIsRequiredAttribute() ?>
-              class="input-text question-textarea" type="text"></textarea>
-
+    <label class="label" for="<?= $block->getFieldIdAttribute() ?>"><span><?= $block->getQuestionTitle() ?></span></label>
+    <div class="control">
+        <textarea id="<?= $block->getFieldIdAttribute() ?>" name="pmeds-validate"
+                  class="input-text question-textarea <?= $block->getIsRequiredAttribute() ?>" type="text"></textarea>
+    </div>
 </div>

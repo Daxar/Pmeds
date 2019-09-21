@@ -2,6 +2,7 @@
 namespace Tingle\Pmeds\Block\Form;
 
 use Magento\Framework\View\Element\Template;
+use Magento\Backend\Block\Widget\Grid\Column\Filter\Store;
 use Tingle\Pmeds\Api\Data\ConfigInterface;
 use Tingle\Pmeds\Api\ProductQuestionsRepositoryInterface;
 
@@ -55,17 +56,18 @@ class Form extends Template
      */
     public function getFormFields()
     {
-        return $this->buildFields($this->questionsRepo->getAllProductQuestions($this->getData(self::PRODUCT_DATA_KEY)));
+        $questions = $this->questionsRepo->getAllProductQuestions($this->getData(self::PRODUCT_DATA_KEY));
+
+        if (!$questions->getSize()) {
+            $questions = $this->questionsRepo->getAllProductQuestions($this->getData(self::PRODUCT_DATA_KEY)->setStoreId(Store::ALL_STORE_VIEWS));
+        }
+
+        return $this->buildFields($questions);
     }
 
     public function getProductQuestionnaireTitle()
     {
         return $this->getData(self::PRODUCT_DATA_KEY)->getData(ConfigInterface::QUESTIONNAIRE_INTRO_TEXT);
-    }
-
-    public function getFormAction()
-    {
-        return 'http://127.0.0.1/tingle/questions/validate';//TODO: Build submit url here
     }
 
     /**

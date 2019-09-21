@@ -175,6 +175,7 @@ class Pmeds extends AbstractModifier
                         'formElement' => Textarea::NAME,
                         'componentType' => Field::NAME,
                         'visible' => true,
+                        'scopeLabel' => '[STORE VIEW]',
                         'dataScope' => ConfigInterface::QUESTIONNAIRE_INTRO_TEXT,
                         'required' => false,
                         'label' => __('Questionnaire intro'),
@@ -202,6 +203,7 @@ class Pmeds extends AbstractModifier
                         'dataScope' => ConfigInterface::SELECTED_QUESTIONS_LIST,
                         'dataType' => Text::NAME,
                         'sortOrder' => 20,
+                        'scopeLabel' => '[STORE VIEW]',
                         'required' => false,
                         'options' => $this->options->toOptionArray(),
                         'visible' => true,
@@ -220,7 +222,7 @@ class Pmeds extends AbstractModifier
         $productQuestions = $this->productQuestionsRepository->getAllProductQuestionsMetaData($this->product);
 
         /** @var \Tingle\Pmeds\Api\Data\ProductQuestionsInterface $productQuestion */
-        foreach ($productQuestions as $productQuestion) {
+        foreach ($productQuestions->getItems() as $productQuestion) {
             if (!empty($list)) {
                 $list .= ',';
             }

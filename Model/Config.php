@@ -55,7 +55,7 @@ class Config implements ConfigInterface
         $searchCriteria = $this->searchCriteriaBuilder->create();
         $attributeSets = $this->attributeSetRepository->getList($searchCriteria)->getItems();
 
-        /** @var \Magento\Eav\Api\Data\AttributeSetInterface $attributeSet */
+        /** @var \Magento\Eav\Api\Data\AttributeSetInterface $attributeSet */ // TODO: Optimize this part
         foreach ($attributeSets as $attributeSet) {
             if ($attributeSet->getAttributeSetName() === InstallData::ATTRIBUTE_SET_NAME) {
                 return $attributeSet->getAttributeSetId();
