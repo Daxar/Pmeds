@@ -34,8 +34,8 @@ class Source implements OptionSourceInterface
         if ($options = $this->dataPersistor->get(Config::DATA_PERSISTOR_OPTIONS_KEY)) {
             foreach($options as $option) {
                 $newOptions[] = [
-                    'value' => $option->record_id,
-                    'label' => $option->row_name
+                    'value' => $option['record_id'],
+                    'label' => $option['row_name']
                 ];
             }
 

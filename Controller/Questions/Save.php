@@ -124,8 +124,7 @@ class Save extends Action
                 $correctAnswer = null;
 
                 if ($this->config->getType($questionModel->getTypeId()) === Select::TYPE) {
-                    $options = unserialize($questionModel->getOptions());
-                    foreach ($options as $option) {
+                    foreach ($questionModel->getOptions() as $option) {
                         if ($option['record_id'] == $customerAnswer) {
                             $customerAnswer = $option['row_name'];
                         }
