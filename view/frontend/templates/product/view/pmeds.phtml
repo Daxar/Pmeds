@@ -1,0 +1,4 @@
+<?php /** @var \Tingle\Pmeds\Block\Product\View\Pmeds $block */ ?>
+<?php if ($block->isEnabledAtProductPage()): ?>
+    <img src="<?= $block->getFileLinkUrl() ?>" title="<?= $block->getInfoHelpText() ?>" alt="pmeds-image" height="50" width="50"/>
+<?php endif; ?>

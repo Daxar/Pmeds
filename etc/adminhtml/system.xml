@@ -15,25 +15,29 @@
                     <label>Module Enable</label>
                     <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                 </field>
-                <field id="info_display_title" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
-                    <label>Info Display Text</label>
+                <field id="info_display_help_text_enabled" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Enable frontend info display help text</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
                     <depends>
                         <field id="enable">1</field>
                     </depends>
                 </field>
                 <field id="info_display_help_text" translate="label" type="textarea" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
-                    <label>Info Display Help Text</label>
+                    <label>Info Display Help Text </label>
                     <depends>
                         <field id="enable">1</field>
+                        <field id="info_display_help_text_enabled">1</field>
                     </depends>
                 </field>
-                <!--       TODO: Add this functionality once the bugs are fixed         -->
-<!--                <field id="icon_upload" translate="label" type="Magento\Config\Block\System\Config\Form\Field\File" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">-->
-<!--                    <label>Icon upload</label>-->
-<!--                    <depends>-->
-<!--                        <field id="enable">1</field>-->
-<!--                    </depends>-->
-<!--                </field>-->
+                <field id="icon_upload" translate="label" type="Magento\Config\Block\System\Config\Form\Field\File" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Icon upload</label>
+                    <backend_model>Tingle\Pmeds\Model\System\Config\Backend\File</backend_model>
+                    <upload_dir config="system" scope_info="1">pmeds</upload_dir>
+                    <depends>
+                        <field id="enable">1</field>
+                        <field id="info_display_help_text_enabled">1</field>
+                    </depends>
+                </field>
                 <field id="questionnaire_title" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Questionnaire Title</label>
                     <depends>
