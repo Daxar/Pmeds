@@ -29,6 +29,11 @@ class QuestionnaireFormData extends AbstractModel implements QuestionnaireFormDa
         return $this->setData(self::FIELD_QUESTIONNAIRE_FORM_DATA, serialize($data));
     }
 
+    public function setCustomerIdAddress($ipAddress)
+    {
+        return $this->setData(self::FIELD_CUSTOMER_IP_ADDRESS, $ipAddress);
+    }
+
     public function getOrderId()
     {
         return $this->getData(self::FIELD_ORDER_ID);
@@ -42,5 +47,15 @@ class QuestionnaireFormData extends AbstractModel implements QuestionnaireFormDa
     public function getId()
     {
         return $this->getData(self::FIELD_ID);
+    }
+
+    public function getCreatedAt()
+    {
+        return $this->getData(self::FIELD_CREATED_AT);
+    }
+
+    public function getCustomerIpAddress()
+    {
+        return $this->getData(self::FIELD_CUSTOMER_IP_ADDRESS);
     }
 }

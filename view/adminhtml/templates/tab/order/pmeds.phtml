@@ -1,0 +1,77 @@
+<?php /* @var \Tingle\Pmeds\Block\Adminhtml\Order\View\Tab\Pmeds $block */ ?>
+<?php if ($block->getFormData()): ?>
+    <section class="admin__page-section order-view-account-information">
+        <div class="admin__page-section-content">
+            <div class="admin__page-section-item-title">
+                <span class="title"><?= __('General') ?></span>
+            </div>
+            <div class="admin__page-section-item pmeds-information">
+                <div class="admin__page-section-item-content">
+                    <table class="admin__table-secondary pmeds-information-table">
+                        <tr>
+                            <th><?php echo $block->escapeHtml(__('Data submitted at')) ?></th>
+                            <td><?php echo $block->escapeHtml($block->getFormData()->getCreatedAt()) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?php echo $block->escapeHtml(__('Customer IP address:')) ?></th>
+                            <td><?php echo $block->escapeHtml($block->getFormData()->getCustomerIpAddress()) ?></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+    <?php foreach ($block->getAnswersData() as $item): ?>
+        <section class="admin__page-section order-view-account-information">
+            <div class="admin__page-section-title">
+                <span class="title"><?php echo $block->escapeHtml(__('Product SKU: ') . $item['product_sku'] . ' ( ' . $item['product_name'] . ' ) ') ?></span>
+            </div>
+            <?php foreach ($item['questions'] as $question): ?>
+                <div class="admin__page-section-item-title">
+                    <span class="title"><?= __('Question ID: #' . $question['question_id']) ?></span>
+                </div>
+                <div class="admin__page-section-content">
+                    <table class="admin__table-secondary order-information-table">
+                        <tr>
+                            <th><?php echo $block->escapeHtml(__('Question Title:')) ?></th>
+                            <td><?php echo $block->escapeHtml($question['question_title']) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?php echo $block->escapeHtml(__('Question Type:')) ?></th>
+                            <td><?php echo $block->escapeHtml($question['question_type']) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?php echo $block->escapeHtml(__('Data submitted at:')) ?></th>
+                            <td><?php echo $block->escapeHtml($item['timestamp']) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?php echo $block->escapeHtml(__('Required:')) ?></th>
+                            <td><?php echo $block->escapeHtml($question['is_required']) ?></td>
+                        </tr>
+                        <tr>
+                            <th><?php echo $block->escapeHtml(__('Customer answer:')) ?></th>
+                            <td><?php echo $block->escapeHtml($question['customer_answer']) ?></td>
+                        </tr>
+                        <?php if (1 == 1): ?>
+                            <tr>
+                                <th><?php echo $block->escapeHtml(__('Correct answer')) ?></th>
+                                <td><?php echo $block->escapeHtml($question['correct_answer']) ?></td>
+                            </tr>
+                        <?php endif; ?>
+                    </table>
+                </div>
+            <?php endforeach; ?>
+        </section>
+    <?php endforeach; ?>
+<?php else: ?>
+    <section class="admin__page-section order-view-account-information">
+        <div class="admin__page-section-title">
+            <span class="title"><?php echo $block->escapeHtml(__('Questionnaire form data. Customer provided the following answers:')) ?></span>
+        </div>
+        <div class="admin__page-section-content">
+            <div class="admin__page-section-item-title">
+                <span class="title"><?= __('All products in this order have no questions assigned to them.') ?></span>
+            </div>
+        </div>
+    </section>
+<?php endif; ?>

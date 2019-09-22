@@ -41,7 +41,7 @@ class Save extends AbstractAction
             ->setRequired($data['required'])
             ->setTypeId($data['type_id'])
             ->setOptions(!empty($data['options']) ? $data['options'] : null)
-            ->setAnswer(!empty($data['answer']) ? $data['answer'] : null);
+            ->setAnswer(isset($data['answer']) ? $data['answer'] : null);
 
         try {
             $this->repository->save($model);

@@ -5,6 +5,7 @@ use Magento\Framework\View\Element\Template;
 use Magento\Backend\Block\Widget\Grid\Column\Filter\Store;
 use Tingle\Pmeds\Api\Data\ConfigInterface;
 use Tingle\Pmeds\Api\ProductQuestionsRepositoryInterface;
+use Magento\Framework\Stdlib\DateTime\DateTime;
 
 class Form extends Template
 {
@@ -24,23 +25,28 @@ class Form extends Template
      */
     protected $config;
 
+    protected $date;
+
     /**
      * Form constructor.
      *
      * @param Template\Context $context
      * @param ProductQuestionsRepositoryInterface $questionsRepo
      * @param ConfigInterface $config
+     * @param DateTime $date
      * @param array $data
      */
     public function __construct(
         Template\Context $context,
         ProductQuestionsRepositoryInterface $questionsRepo,
         ConfigInterface $config,
+        DateTime $date,
         array $data = []
     ) {
         parent::__construct($context, $data);
         $this->questionsRepo = $questionsRepo;
         $this->config = $config;
+        $this->date = $date;
     }
 
     /**
@@ -49,6 +55,11 @@ class Form extends Template
     public function getFormId()
     {
         return self::FORM_ID;
+    }
+
+    public function getTimeStamp()
+    {
+        return $this->date->date();
     }
 
     /**

@@ -185,6 +185,8 @@ define([
 
                 var fields = $('[name="pmeds-validate"]');
 
+                var timestamp = $('#pmeds-form-timestamp').val();
+
                 $.each(fields, function (index, field) {
 
                     var id    = $(field).attr('id').replace( /^\D+/g, '');
@@ -192,8 +194,11 @@ define([
 
                     dataToStore.push({
                         'question_id': id,
-                        'customer_answer': value
+                        'customer_answer': value,
+                        'timestamp': timestamp
                     });
+
+                    dataToStore.timestamp = $('#pmeds-form-timestamp').val();
                 });
 
                 var passed = registry.get('localStorage').get('products-questionnaire-passed');
@@ -202,6 +207,7 @@ define([
                     passed = {};
                 }
 
+                dataToStore['timestamp'] =
                 passed[productSku] = dataToStore;
 
                 registry.get('localStorage').set('products-questionnaire-passed', passed);

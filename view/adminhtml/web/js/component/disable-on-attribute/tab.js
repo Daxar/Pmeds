@@ -22,7 +22,9 @@ define([
         },
 
         setTabVisibility: function (boolean) {
-            registry.get('product_form.product_form.tingle_pmeds_questions_setup').set('visible', boolean);
+            if (registry.get('product_form.product_form.tingle_pmeds_questions_setup') !== undefined) {
+                registry.get('product_form.product_form.tingle_pmeds_questions_setup').set('visible', boolean);
+            }
         }
     });
 });

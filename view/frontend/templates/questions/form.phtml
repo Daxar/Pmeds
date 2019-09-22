@@ -4,6 +4,7 @@
     <div class="questionnaire-intro">
         <span><?= $block->escapeHtml($block->getProductQuestionnaireTitle()) ?></span>
     </div>
+    <input id="pmeds-form-timestamp" type="hidden" value="<?= $block->getTimeStamp() ?>" />
     <fieldset class="fieldset">
         <?= /* @escapeNotVerified */ $block->getFormFields() ?>
     </fieldset>

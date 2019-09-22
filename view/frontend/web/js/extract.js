@@ -32,7 +32,7 @@ define([
                     data: data,
                     dataType: 'json',
                 }).always(function () {
-                    // registry.get('localStorage').remove('products-questionnaire-passed'); // TODO: Uncomment this line. Line was commented out for testing.
+                    registry.get('localStorage').remove('products-questionnaire-passed');
                 });
             }
         }

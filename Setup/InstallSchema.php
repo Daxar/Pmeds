@@ -109,7 +109,7 @@ class InstallSchema implements InstallSchemaInterface
             'ID'
         )->addColumn(
             ProductQuestionsConfig::FIELD_STORE_ID,
-            Table::TYPE_INTEGER,
+            Table::TYPE_SMALLINT,
             null,
             ['unsigned' => true, 'nullable' => false],
             'Store ID'
@@ -125,6 +125,24 @@ class InstallSchema implements InstallSchemaInterface
             null,
             ['unsigned' => true, 'nullable' => false],
             'Selected question ID'
+        )->addForeignKey(
+            $installer->getFkName(ProductQuestionsConfig::TABLE_NAME, ProductQuestionsConfig::FIELD_STORE_ID, 'store', ProductQuestionsConfig::FIELD_STORE_ID),
+            ProductQuestionsConfig::FIELD_STORE_ID,
+            $installer->getTable('store'),
+            ProductQuestionsConfig::FIELD_STORE_ID,
+            Table::ACTION_CASCADE
+        )->addForeignKey(
+            $installer->getFkName(ProductQuestionsConfig::TABLE_NAME, ProductQuestionsConfig::FIELD_PRODUCT_ID, 'catalog_product_entity', 'entity_id'),
+            ProductQuestionsConfig::FIELD_PRODUCT_ID,
+            $installer->getTable('catalog_product_entity'),
+            'entity_id',
+            Table::ACTION_CASCADE
+        )->addForeignKey(
+            $installer->getFkName(ProductQuestionsConfig::TABLE_NAME, ProductQuestionsConfig::FIELD_SELECTED_QUESTION_ID, QuestionsConfig::TABLE_NAME, QuestionsConfig::FIELD_ID),
+            ProductQuestionsConfig::FIELD_SELECTED_QUESTION_ID,
+            $installer->getTable(QuestionsConfig::TABLE_NAME),
+            QuestionsConfig::FIELD_ID,
+            Table::ACTION_CASCADE
         )->setComment(
             'Tingle Pmeds product questions'
         );
@@ -132,6 +150,10 @@ class InstallSchema implements InstallSchemaInterface
             ->createTable($table);
     }
 
+    /**
+     * @param \Magento\Framework\Setup\SchemaSetupInterface $installer
+     * @throws \Exception
+     */
     private function createQuestionnaireFormDataTable($installer)
     {
         if ($installer->getConnection()->isTableExists($installer->getTable(FormDataConfig::TABLE_NAME))) {
@@ -153,11 +175,29 @@ class InstallSchema implements InstallSchemaInterface
             ['unsigned' => true, 'nullable' => false],
             'Order ID'
         )->addColumn(
+            FormDataConfig::FIELD_CREATED_AT,
+            Table::TYPE_TIMESTAMP,
+            null,
+            ['nullable' => false, 'default' => Table::TIMESTAMP_INIT],
+            'Creation Time'
+        )->addColumn(
+            FormDataConfig::FIELD_CUSTOMER_IP_ADDRESS,
+            Table::TYPE_TEXT,
+            255,
+            ['nullable' => false],
+            'Customer IP address'
+        )->addColumn(
             FormDataConfig::FIELD_QUESTIONNAIRE_FORM_DATA,
             Table::TYPE_TEXT,
             '64k',
             ['nullable' => false],
             'Serialized form data'
+        )->addForeignKey(
+            $installer->getFkName(FormDataConfig::TABLE_NAME, FormDataConfig::FIELD_ORDER_ID, 'sales_order', 'entity_id'),
+            FormDataConfig::FIELD_ORDER_ID,
+            $installer->getTable('sales_order'),
+            'entity_id',
+            Table::ACTION_CASCADE
         )->setComment(
             'Tingle Pmeds passed questionnaire form data'
         );

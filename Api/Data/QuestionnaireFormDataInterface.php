@@ -11,6 +11,10 @@ interface QuestionnaireFormDataInterface
 
     const FIELD_QUESTIONNAIRE_FORM_DATA = 'form_data';
 
+    const FIELD_CREATED_AT = 'created_at';
+
+    const FIELD_CUSTOMER_IP_ADDRESS = 'customer_ip_address';
+
     /**
      * @return integer
      */
@@ -27,6 +31,16 @@ interface QuestionnaireFormDataInterface
     public function getQuestionnaireFormData();
 
     /**
+     * @return string
+     */
+    public function getCustomerIpAddress();
+
+    /**
+     * @return string|integer
+     */
+    public function getCreatedAt();
+
+    /**
      * @param integer $id
      * @return $this
      */
@@ -37,4 +51,10 @@ interface QuestionnaireFormDataInterface
      * @return $this
      */
     public function setQuestionnaireFormData($data);
+
+    /**
+     * @param string $ipAddress
+     * @return $this
+     */
+    public function setCustomerIdAddress($ipAddress);
 }

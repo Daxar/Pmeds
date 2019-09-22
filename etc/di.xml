@@ -10,7 +10,27 @@
     <preference for="Tingle\Pmeds\Api\QuestionnaireFormDataRepositoryInterface" type="Tingle\Pmeds\Model\QuestionnaireFormDataRepository" />
 
     <preference for="Tingle\Pmeds\Api\Data\ConfigInterface" type="Tingle\Pmeds\Model\Config" />
+
     <type name="Magento\Checkout\Block\Cart\Sidebar">
         <plugin name="passingTingleExtensionConfiguration" type="Tingle\Pmeds\Plugin\Block\Cart\Sidebar"/>
     </type>
+
+    <type name="Magento\Framework\View\Element\UiComponent\DataProvider\CollectionFactory">
+        <arguments>
+            <argument name="collections" xsi:type="array">
+                <item name="questions_listing_data_source" xsi:type="string">Magento\Customer\Model\ResourceModel\Grid\Collection</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="Magento\Catalog\Ui\DataProvider\Product\Form\Modifier\Pool" type="Magento\Ui\DataProvider\Modifier\Pool">
+        <arguments>
+            <argument name="modifiers" xsi:type="array">
+                <item name="pmeds" xsi:type="array">
+                    <item name="class" xsi:type="string">Tingle\Pmeds\Ui\DataProvider\Product\Form\Modifier\Pmeds</item>
+                    <item name="sortOrder" xsi:type="number">65</item>
+                </item>
+            </argument>
+        </arguments>
+    </virtualType>
+
 </config>

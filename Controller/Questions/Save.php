@@ -10,6 +10,7 @@ use Magento\Quote\Model\QuoteIdMaskFactory;
 use Magento\Sales\Api\OrderRepositoryInterface;
 use Tingle\Pmeds\Api\Data\QuestionnaireFormDataInterfaceFactory;
 use Tingle\Pmeds\Api\QuestionnaireFormDataRepositoryInterface;
+use Magento\Framework\HTTP\PhpEnvironment\RemoteAddress;
 
 class Save extends Action
 {
@@ -25,6 +26,8 @@ class Save extends Action
 
     private $questionnaireFormDataRepository;
 
+    private $remoteAddress;
+
     public function __construct(
         Context $context,
         CartRepositoryInterface $cartRepository,
@@ -32,7 +35,8 @@ class Save extends Action
         OrderRepositoryInterface $orderRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         QuestionnaireFormDataInterfaceFactory $questionnaireFormDataFactory,
-        QuestionnaireFormDataRepositoryInterface $questionnaireFormDataRepository
+        QuestionnaireFormDataRepositoryInterface $questionnaireFormDataRepository,
+        RemoteAddress $remoteAddress
     ) {
         parent::__construct($context);
         $this->cartRepository = $cartRepository;
@@ -41,6 +45,7 @@ class Save extends Action
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->questionnaireFormDataFactory = $questionnaireFormDataFactory;
         $this->questionnaireFormDataRepository = $questionnaireFormDataRepository;
+        $this->remoteAddress = $remoteAddress;
     }
 
     public function execute()
@@ -80,6 +85,7 @@ class Save extends Action
         /** @var \Tingle\Pmeds\Api\Data\QuestionnaireFormDataInterface $model */
         $model = $this->questionnaireFormDataFactory->create();
         $model->setOrderId($order->getId())
+            ->setCustomerIdAddress($this->remoteAddress->getRemoteAddress())
             ->setQuestionnaireFormData($data);
 
         $this->questionnaireFormDataRepository->save($model);
