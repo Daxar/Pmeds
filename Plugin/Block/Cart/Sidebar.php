@@ -42,7 +42,6 @@ class Sidebar
         try {
             $result['pmeds_config'] = $this->getConfig();
         } catch (\Exception $e) {
-            throw new \Exception($e->getMessage()); // TODO: Remove once extension is finished
         }
         return $result;
     }

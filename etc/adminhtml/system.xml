@@ -27,12 +27,13 @@
                         <field id="enable">1</field>
                     </depends>
                 </field>
-                <field id="icon_upload" translate="label" type="Magento\Config\Block\System\Config\Form\Field\File" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
-                    <label>Icon upload</label>
-                    <depends>
-                        <field id="enable">1</field>
-                    </depends>
-                </field>
+                <!--       TODO: Add this functionality once the bugs are fixed         -->
+<!--                <field id="icon_upload" translate="label" type="Magento\Config\Block\System\Config\Form\Field\File" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">-->
+<!--                    <label>Icon upload</label>-->
+<!--                    <depends>-->
+<!--                        <field id="enable">1</field>-->
+<!--                    </depends>-->
+<!--                </field>-->
                 <field id="questionnaire_title" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
                     <label>Questionnaire Title</label>
                     <depends>
@@ -71,13 +72,14 @@
                         <field id="enable">1</field>
                     </depends>
                 </field>
-                <field id="add_to_cart_text" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">
-                    <label>Button text</label>
-                    <comment>'Add To Cart' text will be replaces with this one.</comment>
-                    <depends>
-                        <field id="enable">1</field>
-                    </depends>
-                </field>
+                <!--       TODO: Add this functionality one the bugs are fixed.         -->
+<!--                <field id="add_to_cart_text" translate="label" type="text" sortOrder="1" showInDefault="1" showInWebsite="0" showInStore="0">-->
+<!--                    <label>Button text</label>-->
+<!--                    <comment>'Add To Cart' text will be replaces with this one.</comment>-->
+<!--                    <depends>-->
+<!--                        <field id="enable">1</field>-->
+<!--                    </depends>-->
+<!--                </field>-->
             </group>
         </section>
     </system>

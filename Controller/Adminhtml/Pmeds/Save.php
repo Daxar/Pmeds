@@ -40,7 +40,7 @@ class Save extends AbstractAction
             ->setSortOrder($data['sort_order'])
             ->setRequired($data['required'])
             ->setTypeId($data['type_id'])
-            ->setOptions(!empty($data['options']) ? $data['options'] : null)
+            ->setOptions(isset($data['options']) ? $data['options'] : null)
             ->setAnswer(isset($data['answer']) ? $data['answer'] : null);
 
         try {

@@ -25,6 +25,9 @@ class Form extends Template
      */
     protected $config;
 
+    /**
+     * @var DateTime
+     */
     protected $date;
 
     /**
@@ -57,6 +60,9 @@ class Form extends Template
         return self::FORM_ID;
     }
 
+    /**
+     * @return string
+     */
     public function getTimeStamp()
     {
         return $this->date->date();
@@ -76,6 +82,9 @@ class Form extends Template
         return $this->buildFields($questions);
     }
 
+    /**
+     * @return string
+     */
     public function getProductQuestionnaireTitle()
     {
         return $this->getData(self::PRODUCT_DATA_KEY)->getData(ConfigInterface::QUESTIONNAIRE_INTRO_TEXT);

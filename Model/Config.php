@@ -73,6 +73,9 @@ class Config implements ConfigInterface
         return $this->typesClasses;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getType($integer)
     {
         $types = $this->getTypes();

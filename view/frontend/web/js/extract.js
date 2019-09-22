@@ -23,8 +23,6 @@ define([
         saveQuestionnaireData: function () {
             var data = registry.get('localStorage').get('products-questionnaire-passed');
 
-            console.log(data);
-
             if (data !== undefined) {
                 $.ajax({
                     url: urlBuilder.build('/pmeds/questions/save'),

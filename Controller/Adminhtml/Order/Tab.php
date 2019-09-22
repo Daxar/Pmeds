@@ -61,7 +61,7 @@ class Tab extends \Magento\Sales\Controller\Adminhtml\Order
     }
 
     /**
-     * Generate order history for ajax request
+     * Render Pmeds tab content at adminhtml order view page
      *
      * @return \Magento\Framework\Controller\Result\Raw
      */

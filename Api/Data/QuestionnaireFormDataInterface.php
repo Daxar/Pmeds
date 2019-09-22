@@ -26,7 +26,7 @@ interface QuestionnaireFormDataInterface
     public function getOrderId();
 
     /**
-     * @return \Tingle\Pmeds\Model\Internal\OrderFormData
+     * @return array
      */
     public function getQuestionnaireFormData();
 
@@ -47,7 +47,7 @@ interface QuestionnaireFormDataInterface
     public function setOrderId($id);
 
     /**
-     * @param string $data
+     * @param array $data
      * @return $this
      */
     public function setQuestionnaireFormData($data);

@@ -9,10 +9,22 @@ use Tingle\Pmeds\Api\Data\QuestionnaireFormDataInterface as Config;
 
 class QuestionnaireFormDataRepository implements QuestionnaireFormDataRepositoryInterface
 {
+    /**
+     * @var \Tingle\Pmeds\Model\QuestionnaireFormDataFactory
+     */
     private $modelFactory;
 
+    /**
+     * @var ResourceModel
+     */
     private $resource;
 
+    /**
+     * QuestionnaireFormDataRepository constructor.
+     *
+     * @param \Tingle\Pmeds\Model\QuestionnaireFormDataFactory $modelFactory
+     * @param ResourceModel $resource
+     */
     public function __construct(QuestionnaireFormDataFactory $modelFactory, ResourceModel $resource)
     {
         $this->modelFactory = $modelFactory;

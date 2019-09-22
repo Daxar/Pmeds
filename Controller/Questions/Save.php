@@ -8,9 +8,12 @@ use Magento\Framework\Controller\ResultFactory;
 use Magento\Quote\Api\CartRepositoryInterface;
 use Magento\Quote\Model\QuoteIdMaskFactory;
 use Magento\Sales\Api\OrderRepositoryInterface;
+use Tingle\Pmeds\Api\Data\ConfigInterface;
 use Tingle\Pmeds\Api\Data\QuestionnaireFormDataInterfaceFactory;
 use Tingle\Pmeds\Api\QuestionnaireFormDataRepositoryInterface;
 use Magento\Framework\HTTP\PhpEnvironment\RemoteAddress;
+use Tingle\Pmeds\Api\QuestionsRepositoryInterface;
+use Tingle\Pmeds\Block\Form\Fields\Select;
 
 class Save extends Action
 {
@@ -26,6 +29,13 @@ class Save extends Action
 
     private $questionnaireFormDataRepository;
 
+    /**
+     * @var QuestionsRepositoryInterface
+     */
+    private $questionsRepository;
+
+    private $config;
+
     private $remoteAddress;
 
     public function __construct(
@@ -36,6 +46,8 @@ class Save extends Action
         SearchCriteriaBuilder $searchCriteriaBuilder,
         QuestionnaireFormDataInterfaceFactory $questionnaireFormDataFactory,
         QuestionnaireFormDataRepositoryInterface $questionnaireFormDataRepository,
+        QuestionsRepositoryInterface $questionsRepository,
+        ConfigInterface $config,
         RemoteAddress $remoteAddress
     ) {
         parent::__construct($context);
@@ -45,6 +57,8 @@ class Save extends Action
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->questionnaireFormDataFactory = $questionnaireFormDataFactory;
         $this->questionnaireFormDataRepository = $questionnaireFormDataRepository;
+        $this->questionsRepository = $questionsRepository;
+        $this->config = $config;
         $this->remoteAddress = $remoteAddress;
     }
 
@@ -86,8 +100,75 @@ class Save extends Action
         $model = $this->questionnaireFormDataFactory->create();
         $model->setOrderId($order->getId())
             ->setCustomerIdAddress($this->remoteAddress->getRemoteAddress())
-            ->setQuestionnaireFormData($data);
+            ->setQuestionnaireFormData($this->formatData($data, $order));
 
         $this->questionnaireFormDataRepository->save($model);
+    }
+
+    /**
+     * @param array $data
+     * @param \Magento\Sales\Model\Order $order
+     * @return array
+     */
+    private function formatData($data, $order)
+    {
+        $formattedData = [];
+
+        foreach ($data as $sku => $item) {
+            $formattedItems = [];
+
+            foreach ($item as $questionMetadata) {
+                $questionModel = $this->questionsRepository->getById($questionMetadata['question_id']);
+
+                $customerAnswer = $questionMetadata['customer_answer'];
+                $correctAnswer = null;
+
+                if ($this->config->getType($questionModel->getTypeId()) === Select::TYPE) {
+                    $options = json_decode($questionModel->getOptions(), true);
+                    foreach ($options as $option) {
+                        if ($option['record_id'] == $customerAnswer) {
+                            $customerAnswer = $option['row_name'];
+                        }
+                        if ($option['record_id'] == $questionModel->getAnswer()) {
+                            $correctAnswer = $option['row_name'];
+                        }
+                    }
+                }
+
+                $formattedItems[] = [
+                    'question_id' => $questionModel->getId(),
+                    'question_title' => $questionModel->getTitle(),
+                    'question_type' => $this->config->getType($questionModel->getTypeId()),
+                    'is_required' => $questionModel->getRequired() ? __('Yes') : __('No') ,
+                    'customer_answer' => $customerAnswer,
+                    'correct_answer' => $correctAnswer
+                ];
+            }
+
+            $formattedData[] = [
+                'timestamp' => $item[0]['timestamp'],
+                'product_name' => $this->getProductName($sku, $order),
+                'product_sku' => $sku,
+                'questions' => $formattedItems
+            ];
+        }
+
+        return $formattedData;
+    }
+
+    /**
+     * @param string $sku
+     * @param \Magento\Sales\Model\Order $order
+     * @return string
+     */
+    private function getProductName($sku, $order)
+    {
+        foreach ($order->getAllItems() as $item) {
+            if ($item->getSku() === $sku) {
+                return $item->getName();
+            }
+        }
+
+        return '';
     }
 }

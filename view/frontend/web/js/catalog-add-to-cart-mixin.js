@@ -24,12 +24,12 @@ define([
         if (enabledAtCategoryPage) {
             // TODO: Finish this. This is to replace 'Add to cart' witn custom text only
             _.each($("[data-role='tocart-form']"), function (data) {
-                console.log($(data).attr('data-product-sku'));
+                // console.log($(data).attr('data-product-sku'));
                 // TODO: Request to the controller, with sku. If sku matches, replace button name.
             });
         }
         if (enabledAtProductPage) {
-            console.log($("#product_addtocart_form").attr('data-product-sku'));
+            // console.log($("#product_addtocart_form").attr('data-product-sku'));
             // TODO: Request to the controller, with sku. If sku matches, replace button name.
         }
 
