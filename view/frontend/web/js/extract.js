@@ -30,7 +30,7 @@ define([
                     data: data,
                     dataType: 'json',
                 }).always(function () {
-                    registry.get('localStorage').remove('products-questionnaire-passed');
+                    // registry.get('localStorage').remove('products-questionnaire-passed');
                 });
             }
         }

@@ -9,7 +9,7 @@ class Select extends AbstractField
 
     public function getFormattedOptions()
     {
-        $options = json_decode($this->getQuestion()->getOptions(), true);
+        $options = unserialize($this->getQuestion()->getOptions());
 
         $formattedOptions = [];
 

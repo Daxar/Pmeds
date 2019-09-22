@@ -128,7 +128,7 @@ class Questions extends AbstractModel implements QuestionsInterface
      */
     public function beforeSave()
     {
-        $this->setOptions(json_encode($this->getOptions()));
+        $this->setOptions(serialize($this->getOptions()));
         return parent::beforeSave();
     }
 
@@ -137,7 +137,7 @@ class Questions extends AbstractModel implements QuestionsInterface
      */
     public function afterLoad()
     {
-        $this->setOptions(json_decode($this->getOptions()));
+        $this->setOptions(unserialize($this->getOptions()));
         return parent::afterLoad();
     }
 }
