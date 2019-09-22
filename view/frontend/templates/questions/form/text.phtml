@@ -1,0 +1,7 @@
+<?php /** @var \Tingle\Pmeds\Block\Form\Fields\Text $block */ ?>
+<div class="field name <?= $block->getIsRequiredAttribute() ?>">
+    <label class="label" for="<?= $block->getFieldIdAttribute() ?>"><span><?= $block->getQuestionTitle() ?></span></label>
+    <div class="control">
+        <input id="<?= $block->getFieldIdAttribute() ?>" name="pmeds-validate" class="input-text question-text <?= $block->getIsRequiredAttribute() ?>" type="text" />
+    </div>
+</div>

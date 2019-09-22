@@ -1,0 +1,17 @@
+<?php /* @var \Tingle\Pmeds\Block\Form\Fields\Select $block */ ?>
+<?php $options = $block->getFormattedOptions() ?>
+<div class="field name <?= $block->getIsRequiredAttribute() ?>">
+    <label class="label" for="<?= $block->getFieldIdAttribute() ?>"><span><?= $block->getQuestionTitle() ?></span></label>
+    <div class="control">
+        <select id="<?= $block->getFieldIdAttribute() ?>" name="pmeds-validate"
+                class="input-text question-select <?= $block->getIsRequiredAttribute() ?>">
+            <option value=""></option>
+            <?php foreach ($options as $key => $title): ?>
+                <option value="<?= $key ?>"><?= $title ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+    <?php if (is_numeric($block->getCorrectAnswer())):?>
+        <input name="pmeds-answer" for="<?= $block->getFieldIdAttribute() ?>" type="hidden" value="<?= $block->getCorrectAnswer() ?>"/>
+    <?php endif; ?>
+</div>

@@ -1,0 +1,10 @@
+<?php /** @var \Tingle\Pmeds\Block\Adminhtml\Product\Tab $block */ ?>
+<script type="text/x-magento-init">
+    {
+        "*": {
+            "Tingle_Pmeds/js/component/disable-on-attribute/tab": {
+                "targetAttributeSetId": <?= /* @escapeNotVerified */ (string)$block->getPmedsAttributeSetId() ?>
+            }
+        }
+    }
+</script>

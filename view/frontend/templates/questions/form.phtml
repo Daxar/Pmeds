@@ -1,0 +1,11 @@
+<?php /** @var \Tingle\Pmeds\Block\Form\Form $block */ ?>
+<form id="<?= /* @escapeNotVerified */ $block->getFormId() ?>" style="display:none;" method="post" data-mage-init='{"validation":{}}'>
+    <?= /* @escapeNotVerified */ $block->getBlockHtml('formkey')?>
+    <div class="questionnaire-intro">
+        <span><?= $block->escapeHtml($block->getProductQuestionnaireTitle()) ?></span>
+    </div>
+    <input id="pmeds-form-timestamp" type="hidden" value="<?= $block->getTimeStamp() ?>" />
+    <fieldset class="fieldset">
+        <?= /* @escapeNotVerified */ $block->getFormFields() ?>
+    </fieldset>
+</form>
