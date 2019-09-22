@@ -46,11 +46,7 @@ class Edit extends AbstractAction
         if ($id = $this->getRequest()->getParam('id')) {
             $model = $this->repo->getById($id);
             if (is_string($model->getOptions())) {
-<<<<<<< Updated upstream
-                $model->setOptions(unserialize($model->getOptions()));
-=======
                 $model->setOptions(json_decode($model->getOptions(), true));
->>>>>>> Stashed changes
             }
             $this->dataPersistor->set(Config::DATA_PERSISTOR_OPTIONS_KEY, $model->getOptions());
             $resultPage->getConfig()->getTitle()->prepend(__('Edit question'));
