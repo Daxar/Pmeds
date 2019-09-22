@@ -13,9 +13,11 @@ interface ConfigInterface
 
     const XML_PATH_ENABLE                      = self::XML_PATH_BASE . 'enable';
     const XML_PATH_INFO_TITLE                  = self::XML_PATH_BASE . 'info_display_title';
-    const XML_PATH_INFO_HELP_TEXT              = self::XML_PATH_BASE . 'info_display_help_text';
     const XML_PATH_QUESTIONNAIRE_TITLE         = self::XML_PATH_BASE . 'questionnaire_title';
     const XML_PATH_QUESTIONNAIRE_INTRO         = self::XML_PATH_BASE . 'questionnaire_intro_text';
+    const XML_PATH_INFO_HELP_TEXT_ENABLE       = self::XML_PATH_BASE . 'info_display_help_text_enabled';
+    const XML_PATH_INFO_HELP_TEXT              = self::XML_PATH_BASE . 'info_display_help_text';
+    const XML_PATH_ICON_UPLOAD_PATH            = self::XML_PATH_BASE . 'icon_upload';
     const XML_PATH_QUESTIONNAIRE_PASS_TEXT     = self::XML_PATH_BASE . 'questionnaire_pass_text';
     const XML_PATH_QUESTIONNAIRE_FAIL_TEXT     = self::XML_PATH_BASE . 'questionnaire_fail_text';
     const XML_PATH_ENABLE_AT_CATEGORY_PAGE     = self::XML_PATH_BASE . 'add_at_product_listing'; // category page
