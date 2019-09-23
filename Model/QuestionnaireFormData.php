@@ -32,7 +32,7 @@ class QuestionnaireFormData extends AbstractModel implements QuestionnaireFormDa
      */
     public function setQuestionnaireFormData($data)
     {
-        return $this->setData(self::FIELD_QUESTIONNAIRE_FORM_DATA, serialize($data));
+        return $this->setData(self::FIELD_QUESTIONNAIRE_FORM_DATA, $data);
     }
 
     /**
@@ -56,7 +56,7 @@ class QuestionnaireFormData extends AbstractModel implements QuestionnaireFormDa
      */
     public function getQuestionnaireFormData()
     {
-        return unserialize($this->getData(self::FIELD_QUESTIONNAIRE_FORM_DATA));
+        return $this->getData(self::FIELD_QUESTIONNAIRE_FORM_DATA);
     }
 
     /**
@@ -81,5 +81,23 @@ class QuestionnaireFormData extends AbstractModel implements QuestionnaireFormDa
     public function getCustomerIpAddress()
     {
         return $this->getData(self::FIELD_CUSTOMER_IP_ADDRESS);
+    }
+
+    public function beforeSave()
+    {
+        if ($this->getQuestionnaireFormData() !== null) {
+            $this->setQuestionnaireFormData(serialize($this->getQuestionnaireFormData()));
+        }
+
+        return parent::beforeSave();
+    }
+
+    protected function _afterLoad()
+    {
+        if ($this->getQuestionnaireFormData() !== null) {
+            $this->setQuestionnaireFormData(unserialize($this->getQuestionnaireFormData()));
+        }
+
+        return parent::_afterLoad();
     }
 }
