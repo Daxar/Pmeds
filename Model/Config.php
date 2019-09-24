@@ -5,7 +5,7 @@ use Magento\Eav\Api\AttributeSetRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Tingle\Pmeds\Block\Form\Fields;
 use Tingle\Pmeds\Api\Data\ConfigInterface;
-use Tingle\Pmeds\Setup\InstallData;
+use Tingle\Pmeds\Setup\UpgradeData;
 
 class Config implements ConfigInterface
 {
@@ -57,7 +57,7 @@ class Config implements ConfigInterface
 
         /** @var \Magento\Eav\Api\Data\AttributeSetInterface $attributeSet */ // TODO: Optimize this part
         foreach ($attributeSets as $attributeSet) {
-            if ($attributeSet->getAttributeSetName() === InstallData::ATTRIBUTE_SET_NAME) {
+            if ($attributeSet->getAttributeSetName() === UpgradeData::ATTRIBUTE_SET_NAME) {
                 return $attributeSet->getAttributeSetId();
             }
         }
