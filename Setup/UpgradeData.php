@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 namespace Tingle\Pmeds\Setup;
 
-use Magento\Framework\Setup\ModuleContextInterface;
+use Magento\Framework\Setup\UpgradeDataInterface;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
-use Magento\Framework\Setup\InstallDataInterface;
+use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Catalog\Api\Data\ProductAttributeInterface;
 use Magento\Catalog\Model\Product;
 use Magento\Eav\Api\AttributeSetManagementInterface;
@@ -14,7 +14,7 @@ use Magento\Eav\Setup\EavSetupFactory;
 use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
 use Tingle\Pmeds\Api\Data\ConfigInterface;
 
-class InstallData implements InstallDataInterface
+class UpgradeData implements UpgradeDataInterface
 {
     const ATTRIBUTE_SET_NAME = 'P-Meds';
 
@@ -75,30 +75,32 @@ class InstallData implements InstallDataInterface
     }
 
     /**
-     * Create 'P-Meds' attribute set
-     *
      * @param ModuleDataSetupInterface $setup
      * @param ModuleContextInterface $context
-     * @throws \Exception
+     * @throws \Magento\Framework\Exception\InputException
+     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    public function install(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
+    public function upgrade(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
     {
         $setup->startSetup();
 
-        if (!$this->config->getPmedsAttributeSetId()) {
-            $productEntityId = $this->eavConfig->getEntityType(ProductAttributeInterface::ENTITY_TYPE_CODE)->getId();
-            $defaultAttributeSetId = $this->eavSetup->getDefaultAttributeSetId($productEntityId);
+        if (version_compare($context->getVersion(), '0.8.4', '<')) {
+            if (!$this->config->getPmedsAttributeSetId()) {
+                $productEntityId = $this->eavConfig->getEntityType(ProductAttributeInterface::ENTITY_TYPE_CODE)->getId();
+                $defaultAttributeSetId = $this->eavSetup->getDefaultAttributeSetId($productEntityId);
 
-            /** @var \Magento\Eav\Api\Data\AttributeSetInterface $attrSet */
-            $attrSet = $this->attributeSetInterfaceFactory->create();
-            $attrSet->setAttributeSetName(self::ATTRIBUTE_SET_NAME)
-                ->setEntityTypeId($productEntityId);
-            $this->attributeSetManagement->create(
-                ProductAttributeInterface::ENTITY_TYPE_CODE, $attrSet, $defaultAttributeSetId
-            );
+                /** @var \Magento\Eav\Api\Data\AttributeSetInterface $attrSet */
+                $attrSet = $this->attributeSetInterfaceFactory->create();
+                $attrSet->setAttributeSetName(self::ATTRIBUTE_SET_NAME)
+                    ->setEntityTypeId($productEntityId);
+                $this->attributeSetManagement->create(
+                    ProductAttributeInterface::ENTITY_TYPE_CODE, $attrSet, $defaultAttributeSetId
+                );
+            }
+
+            $this->addQuestionnaireIntroAttribute($setup);
         }
-
-        $this->addQuestionnaireIntroAttribute($setup);
 
         $setup->endSetup();
     }
