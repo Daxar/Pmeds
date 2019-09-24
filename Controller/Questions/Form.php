@@ -10,7 +10,7 @@ use Magento\Backend\Block\Widget\Grid\Column\Filter\Store;
 use Magento\Eav\Api\AttributeSetRepositoryInterface;
 use Tingle\Pmeds\Api\ProductQuestionsRepositoryInterface;
 use Tingle\Pmeds\Block\Form\Form as QuestionsForm;
-use Tingle\Pmeds\Setup\InstallData;
+use Tingle\Pmeds\Setup\UpgradeData;
 
 class Form extends Action
 {
@@ -87,7 +87,7 @@ class Form extends Action
         try {
             $attributeSetName = $this->attributeSetRepository->get($product->getAttributeSetId())->getAttributeSetName();
 
-            $isPmedsAttributeSet = $attributeSetName === InstallData::ATTRIBUTE_SET_NAME;
+            $isPmedsAttributeSet = $attributeSetName === UpgradeData::ATTRIBUTE_SET_NAME;
             $hasStoreQuestions = $this->productQuestionsRepository->getAllProductQuestionsMetaData($product)->getTotalCount();
             $hasDefaultQuestions = $this->productQuestionsRepository->getAllProductQuestionsMetaData($product->setStoreId(Store::ALL_STORE_VIEWS))->getTotalCount();
 
