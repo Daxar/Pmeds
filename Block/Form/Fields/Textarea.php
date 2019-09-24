@@ -1,7 +1,7 @@
 <?php declare(strict_types=1);
 namespace Tingle\Pmeds\Block\Form\Fields;
 
-class Textarea extends AbstractField
+class TextArea extends AbstractField
 {
     const TYPE = 'textarea';
 
