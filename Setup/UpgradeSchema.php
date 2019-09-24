@@ -1,29 +1,27 @@
 <?php declare(strict_types=1);
 namespace Tingle\Pmeds\Setup;
 
-use Magento\Framework\Setup\InstallSchemaInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\SchemaSetupInterface;
 use Magento\Framework\DB\Ddl\Table;
 use Tingle\Pmeds\Api\Data\QuestionsInterface as QuestionsConfig;
 use Tingle\Pmeds\Api\Data\ProductQuestionsInterface as ProductQuestionsConfig;
 use Tingle\Pmeds\Api\Data\QuestionnaireFormDataInterface as FormDataConfig;
+use Magento\Framework\Setup\UpgradeSchemaInterface;
 
-class InstallSchema implements InstallSchemaInterface
+class UpgradeSchema implements UpgradeSchemaInterface
 {
-    /**
-     * {@inheritdoc}
-     * @throws \Exception
-     */
-    public function install(SchemaSetupInterface $setup, ModuleContextInterface $context)
+    public function upgrade(SchemaSetupInterface $setup, ModuleContextInterface $context)
     {
         $installer = $setup;
 
         $installer->startSetup();
 
-        $this->createQuestionsTable($installer);
-        $this->createProductQuestionsTable($installer);
-        $this->createQuestionnaireFormDataTable($installer);
+        if(version_compare($context->getVersion(), '0.8.4', '<')) {
+            $this->createQuestionsTable($installer);
+            $this->createProductQuestionsTable($installer);
+            $this->createQuestionnaireFormDataTable($installer);
+        }
 
         $installer->endSetup();
     }
