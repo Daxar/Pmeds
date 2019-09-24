@@ -21,13 +21,13 @@ class Config implements ConfigInterface
 
     private $typesList = [
         0 => Fields\Text::TYPE,
-        1 => Fields\TextArea::TYPE,
+        1 => Fields\Textarea::TYPE,
         2 => Fields\Select::TYPE
     ];
 
     private $typesClasses = [
         0 => Fields\Text::class,
-        1 => Fields\TextArea::class,
+        1 => Fields\Textarea::class,
         2 => Fields\Select::class
     ];
 
