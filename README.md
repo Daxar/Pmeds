@@ -16,3 +16,5 @@ php bin/magento setup:static-content:deploy
 Module functionality path at admin panel:  
 Adminhtml config path : Stores->Configurations->Tingle->Pmeds  
 Add new question path : Products->Pmeds->Questions  
+Pmeds Tab path        : Sales->Orders->Pmeds  
+ 
