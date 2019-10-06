@@ -1,4 +1,16 @@
 <?php /** @var \Tingle\Pmeds\Block\Product\View\Pmeds $block */ ?>
 <?php if ($block->isEnabledAtProductPage()): ?>
-    <img src="<?= $block->getFileLinkUrl() ?>" title="<?= $block->getInfoHelpText() ?>" alt="pmeds-image" height="50" width="50"/>
+    <div id="pmeds-info-<?= $block->getProduct()->getId() ?>" class="pmeds-image-container">
+        <img src="<?= $block->getFileLinkUrl() ?>" title="<?= $block->getInfoHelpText() ?>" alt="pmeds-image" height="50" width="50"/>
+    </div>
+    <script type="text/x-magento-init">
+        {
+            "#pmeds-info-<?= $block->getProduct()->getId() ?>": {
+                "Tingle_Pmeds/js/info-help-alert": {
+                    "infoDisplayText": "<?= $block->getInfoHelpText() ?>",
+                    "targetId": "#pmeds-info-<?= $block->getProduct()->getId() ?>"
+                }
+            }
+        }
+    </script>
 <?php endif; ?>
