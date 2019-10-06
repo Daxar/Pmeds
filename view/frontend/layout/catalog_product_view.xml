@@ -2,7 +2,7 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="product.info.main">
-            <container name="product.info.pmeds" label="Product P-meds container" htmlTag="div" htmlClass="product-info-pmeds" after="product.info.price" ifconfig="pmeds/general/enable">
+            <container name="product.info.pmeds" label="Product P-meds container" htmlTag="div" htmlClass="product-info-pmeds" after="product.info.price">
                 <block class="Tingle\Pmeds\Block\Product\View\Pmeds" name="product.info.pmeds.image" template="Tingle_Pmeds::product/view/pmeds.phtml" />
             </container>
         </referenceContainer>
